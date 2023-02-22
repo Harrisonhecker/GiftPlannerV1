@@ -1,6 +1,7 @@
 package com.example.giftplannerv1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,9 @@ public class FirstFragment extends Fragment {
 
     private FragmentFirstBinding binding;
 
+    private String TAG = "FirstFragment";
+    private int tracker = 0;
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -22,8 +26,10 @@ public class FirstFragment extends Fragment {
     ) {
 
         binding = FragmentFirstBinding.inflate(inflater, container, false);
-        return binding.getRoot();
 
+        Log.d(TAG, "onCreateView called");
+
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -32,6 +38,18 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.d(TAG, "This is where my first breakpoint is.");
+                tracker++;
+                Log.d(TAG, "The value of tracker after the first breakpoint is " + tracker);
+                Log.d(TAG, "This is where my second breakpoint is.");
+                tracker++;
+                Log.d(TAG, "The value of tracker after the second breakpoint is " + tracker);
+                Log.d(TAG, "This is where my third breakpoint is.");
+                tracker++;
+                Log.d(TAG, "The value of tracker after the third breakpoint is " + tracker);
+
+
                 NavHostFragment.findNavController(FirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }

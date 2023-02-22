@@ -1,6 +1,7 @@
 package com.example.giftplannerv1;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
 
+    private String TAG = "SecondFragment";
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -22,6 +25,9 @@ public class SecondFragment extends Fragment {
     ) {
 
         binding = FragmentSecondBinding.inflate(inflater, container, false);
+
+        Log.d(TAG, "onCreateView called");
+
         return binding.getRoot();
 
     }
