@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "248620038053",
+    "firebase_url": "https://gift-planner-5236-default-rtdb.firebaseio.com",
+    "project_id": "gift-planner-5236",
+    "storage_bucket": "gift-planner-5236.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248620038053:android:94a394afbef2313fc75a4c",
+        "android_client_info": {
+          "package_name": "com.example.giftplannerv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248620038053-hqelvulo3vpl8fr4kvkd9ut579i1fclt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.giftplannerv1",
+            "certificate_hash": "2a248a02d7f0d028574aaf58870e51cb426430e6"
+          }
+        },
+        {
+          "client_id": "248620038053-sg9thkj2ubiscaaum7fa5vt6c6ga12ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfWeyAdu9Tn8qnWeLnmKj7KcBiXOi0-dM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248620038053-sg9thkj2ubiscaaum7fa5vt6c6ga12ag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
