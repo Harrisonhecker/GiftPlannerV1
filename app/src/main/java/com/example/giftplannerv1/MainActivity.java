@@ -1,5 +1,6 @@
 package com.example.giftplannerv1;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -9,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,10 +22,13 @@ import com.example.giftplannerv1.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import data.TestModel;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private TestModel testModel;
     private String TAG = "MainActivity";
 
     @Override
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "onCreate Called");
+        Log.d(TAG, "just before call to get ViewModel");
+        testModel = new ViewModelProvider((ViewModelStoreOwner) this).get(TestModel.class);
+        testModel.getData();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
