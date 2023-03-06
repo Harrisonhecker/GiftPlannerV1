@@ -8,15 +8,20 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.giftplannerv1.databinding.FragmentSecondBinding;
+import data.TestModel;
 
 public class SecondFragment extends Fragment {
 
     private FragmentSecondBinding binding;
 
     private String TAG = "SecondFragment";
+
+    private TestModel testModel;
 
     @Override
     public View onCreateView(
@@ -35,11 +40,42 @@ public class SecondFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        testModel = new ViewModelProvider((ViewModelStoreOwner) this).get(TestModel.class);
+
+
         binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(SecondFragment.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
+            }
+        });
+
+        binding.addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testModel.addData();
+            }
+        });
+
+        binding.getData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testModel.getData();
+            }
+        });
+
+        binding.updateData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testModel.updateData();
+            }
+        });
+
+        binding.deleteData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                testModel.deleteData();
             }
         });
     }

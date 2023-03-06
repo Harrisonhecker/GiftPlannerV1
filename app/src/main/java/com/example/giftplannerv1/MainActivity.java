@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private TestModel testModel;
+    public TestModel testModel;
     private String TAG = "MainActivity";
 
     @Override
@@ -37,8 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate Called");
         Log.d(TAG, "just before call to get ViewModel");
-        testModel = new ViewModelProvider((ViewModelStoreOwner) this).get(TestModel.class);
-        testModel.getData();
+        //testModel = new ViewModelProvider((ViewModelStoreOwner) this).get(TestModel.class);
+        //testModel.getData();
+        //testModel.addData();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -56,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
 
+    }
+    /*
     @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart called");
     }
+
 
     @Override
     protected void onStop() {
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.d(TAG, "onResume called");
     }
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
