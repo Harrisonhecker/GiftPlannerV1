@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -29,8 +30,13 @@ public class TestModel extends ViewModel {
     private String addedDocumentId;
 
     public TestModel() {
+
+        /*FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build();
+        FirebaseFirestore.getInstance().setFirestoreSettings(settings);*/
+
         Log.d(TAG, "View Model Created");
         firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.enableNetwork();
         usersCollectionReference = firebaseFirestore.collection("Users");
         Log.d(TAG, String.valueOf(usersCollectionReference));
     }
@@ -40,14 +46,14 @@ public class TestModel extends ViewModel {
 
         Map<String, Object> user = new HashMap<>();
         user.put("testString", "testValue");
-
         // Add a new document with a generated ID
-        usersCollectionReference.add(user)
+        usersCollectionReference
+                .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                         addedDocumentId = documentReference.getId();
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -67,6 +73,8 @@ public class TestModel extends ViewModel {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(TAG, "isFromCache: " + document.getMetadata().isFromCache());
+                                Log.d(TAG, "hasPendingWrite: " + document.getMetadata().hasPendingWrites());
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -74,11 +82,12 @@ public class TestModel extends ViewModel {
                     }
                 });
 
+
     }
 
     public void updateData() {
         usersCollectionReference.document(addedDocumentId)
-                .update("testString", "testValue")
+                .update("testString", "newValue")
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
