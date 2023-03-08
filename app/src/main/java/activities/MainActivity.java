@@ -1,8 +1,9 @@
-package com.example.giftplannerv1;
+package activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.giftplannerv1.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;

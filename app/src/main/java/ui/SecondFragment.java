@@ -1,4 +1,4 @@
-package com.example.giftplannerv1;
+package ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.FragmentSecondBinding;
 import data.TestModel;
 

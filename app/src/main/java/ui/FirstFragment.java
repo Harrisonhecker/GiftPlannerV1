@@ -1,4 +1,4 @@
-package com.example.giftplannerv1;
+package ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.fragment.NavHostFragment;
-import data.*;
 
+import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
