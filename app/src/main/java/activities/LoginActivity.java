@@ -1,6 +1,5 @@
 package activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.example.giftplannerv1.R;
@@ -11,26 +10,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.giftplannerv1.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
-import data.TestModel;
+import adapters.EventAdapter;
+import data.UserModel;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    public TestModel testModel;
+    public UserModel userModel;
     private String TAG = "MainActivity";
+
+    private RecyclerView eventRecyclerView;
+    private EventAdapter eventAdapter;
+    private LinearLayoutManager eventLayoutManager;
+    private String[] items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

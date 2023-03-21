@@ -14,11 +14,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.giftplannerv1.R;
-import com.example.giftplannerv1.databinding.FragmentFirstBinding;
+import com.example.giftplannerv1.databinding.LoginFragmentBinding;
 
-public class FirstFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    private FragmentFirstBinding binding;
+    private LoginFragmentBinding binding;
     private ViewModel testModel;
 
     private String TAG = "FirstFragment";
@@ -37,7 +37,7 @@ public class FirstFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = LoginFragmentBinding.inflate(inflater, container, false);
 
         Log.d(TAG, "onCreateView called");
 
@@ -51,7 +51,7 @@ public class FirstFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Log.d(TAG, "This is where my first breakpoint is.");
+                /*Log.d(TAG, "This is where my first breakpoint is.");
                 tracker++;
                 Log.d(TAG, "The value of tracker after the first breakpoint is " + tracker);
                 Log.d(TAG, "This is where my second breakpoint is.");
@@ -59,11 +59,11 @@ public class FirstFragment extends Fragment {
                 Log.d(TAG, "The value of tracker after the second breakpoint is " + tracker);
                 Log.d(TAG, "This is where my third breakpoint is.");
                 tracker++;
-                Log.d(TAG, "The value of tracker after the third breakpoint is " + tracker);
+                Log.d(TAG, "The value of tracker after the third breakpoint is " + tracker);*/
 
 
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_LoginFragment_to_EventsFragment);
             }
         });
     }
