@@ -43,9 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate Called");
         Log.d(TAG, "just before call to get ViewModel");
-        //testModel = new ViewModelProvider((ViewModelStoreOwner) this).get(TestModel.class);
-        //testModel.getData();
-        //testModel.addData();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

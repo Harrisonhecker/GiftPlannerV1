@@ -19,10 +19,8 @@ import com.example.giftplannerv1.databinding.LoginFragmentBinding;
 public class LoginFragment extends Fragment {
 
     private LoginFragmentBinding binding;
-    private ViewModel testModel;
 
     private String TAG = "FirstFragment";
-    private int tracker = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,19 +49,16 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                /*Log.d(TAG, "This is where my first breakpoint is.");
-                tracker++;
-                Log.d(TAG, "The value of tracker after the first breakpoint is " + tracker);
-                Log.d(TAG, "This is where my second breakpoint is.");
-                tracker++;
-                Log.d(TAG, "The value of tracker after the second breakpoint is " + tracker);
-                Log.d(TAG, "This is where my third breakpoint is.");
-                tracker++;
-                Log.d(TAG, "The value of tracker after the third breakpoint is " + tracker);*/
-
-
                 NavHostFragment.findNavController(LoginFragment.this)
                         .navigate(R.id.action_LoginFragment_to_EventsFragment);
+            }
+        });
+        binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavHostFragment.findNavController(LoginFragment.this)
+                        .navigate(R.id.action_LoginFragment_to_SignupFragment);
             }
         });
     }
