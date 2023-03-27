@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -24,6 +27,7 @@ import android.view.MenuItem;
 
 import adapters.EventAdapter;
 import data.UserModel;
+import ui.EditProfileFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -113,6 +117,14 @@ public class LoginActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        /*if (id == R.id.action_edit_profile){
+            Log.d(TAG, "Edit Profile pressed");
+            EditProfileFragment editProfileFragment = new EditProfileFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.nav_host_fragment_content_main, editProfileFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

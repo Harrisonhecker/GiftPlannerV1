@@ -73,6 +73,13 @@ public class EventsFragment extends Fragment {
                         .navigate(R.id.action_EventsFragment_to_LoginFragment);
             }
         });*/
+        binding.editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(EventsFragment.this)
+                        .navigate(R.id.action_EventsFragment_to_EditProfileFragment);
+            }
+        });
     }
 
     @Override

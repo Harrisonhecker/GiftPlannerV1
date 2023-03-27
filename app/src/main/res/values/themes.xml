@@ -12,11 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="Theme.GiftPlannerV1.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="Theme.GiftPlannerV1.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
