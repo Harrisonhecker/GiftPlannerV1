@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,6 +19,7 @@ import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.EventsFragmentBinding;
 
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import activities.LoginActivity;
@@ -69,17 +71,18 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //userModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserModel.class);
-        ArrayList<Object> events = activity.userModel.getEvents();
-        Log.d(TAG, events.toString());
+        // register an observer on the events MutableLiveData
+        activity.userModel.getEvents().observe(getViewLifecycleOwner(),
+                new Observer<ArrayList<Object>>() {
 
-        /*binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
+            //when the data loads, do something
             @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(EventsFragment.this)
-                        .navigate(R.id.action_EventsFragment_to_LoginFragment);
+            public void onChanged(ArrayList<Object> data) {
+                Log.d(TAG, "Events retrieved");
+                Log.d(TAG, data.toString());
             }
-        });*/
+        });
+
         binding.editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,16 +1,11 @@
 package data;
 
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.giftplannerv1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,20 +14,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
-import activities.LoginActivity;
-import ui.SignupFragment;
 
 
 public class UserModel extends ViewModel {
@@ -43,9 +29,7 @@ public class UserModel extends ViewModel {
 
     private FirebaseAuth mAuth;
 
-    private String addedDocumentId;
     private String userUID;
-
     private String userEmail;
     private String userFirstName;
     private String userLastName;
@@ -53,8 +37,8 @@ public class UserModel extends ViewModel {
     private String userBudget;
     private String userUsername;
     private String profilePic;
+    private MutableLiveData<ArrayList<Object>> events;
 
-    private ArrayList<Object> events;
 
     public UserModel() {
 
@@ -64,9 +48,11 @@ public class UserModel extends ViewModel {
         firebaseFirestore.enableNetwork();
         usersCollectionReference = firebaseFirestore.collection("Users");
         Log.d(TAG, String.valueOf(usersCollectionReference));
+
+        events = new MutableLiveData<>();
     }
 
-
+    /* Add a user to the database */
     public void addUser(String email, String password, Map<String, Object> userData) {
 
         // locally save all the account information
@@ -102,29 +88,10 @@ public class UserModel extends ViewModel {
                         }
                     }
                 });
-
-        /*Map<String, Object> user = new HashMap<>();
-        user.put("testString", "testValue");
-        // Add a new document with a generated ID
-        usersCollectionReference
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        addedDocumentId = documentReference.getId();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });*/
     }
 
+    /* Get a user's information */
     public void getUser() {
-
 
         usersCollectionReference.document(userUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -132,6 +99,7 @@ public class UserModel extends ViewModel {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+
                         // Get the data from the document
                         userEmail = document.getString("email");
                         userFirstName = document.getString("first_name");
@@ -139,7 +107,8 @@ public class UserModel extends ViewModel {
                         userPassword = document.getString("password");
                         userBudget = document.getString("spending_budget");
                         userUsername = document.getString("username");
-                        events = (ArrayList<Object>) document.get("events");
+
+                        events.setValue((ArrayList<Object>) document.get("events"));
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -148,26 +117,10 @@ public class UserModel extends ViewModel {
                 }
             }
         });
-
-
-        /*usersCollectionReference
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Log.d(TAG, "isFromCache: " + document.getMetadata().isFromCache());
-                                Log.d(TAG, "hasPendingWrite: " + document.getMetadata().hasPendingWrites());
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });*/
     }
 
+    /* Update a user's information. This method takes a map of all the key value pairs to be
+    updated in the database. */
     public void updateUser(Map<String, Object> updates) {
         usersCollectionReference.document(userUID)
                 .update(updates)
@@ -185,8 +138,9 @@ public class UserModel extends ViewModel {
             });
     }
 
+    /* Delete a user from the database */
     public void deleteUser() {
-        usersCollectionReference.document(addedDocumentId)
+        usersCollectionReference.document("")
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -226,6 +180,8 @@ public class UserModel extends ViewModel {
         return result;
     }
 
+    /* This method is called when the user creates an account. It initializes local variables of
+    all the account information */
     private void initInfo(Map<String, Object> data) {
         userEmail = (String) data.get("email");
         userFirstName = (String) data.get("first_name");
@@ -236,31 +192,41 @@ public class UserModel extends ViewModel {
         profilePic = (String) data.get("profile_picture");
     }
 
+    /* Getter method for user email */
     public String getEmail() {
         return this.userEmail;
     }
 
+    /* Getter method for user first name */
     public String getFirstName() {
         return this.userFirstName;
     }
 
+    /* Getter method for user last name */
     public String getLastName() {
         return this.userLastName;
     }
 
+    /* Getter method for user password */
     public String getPassword() {
         return this.userPassword;
     }
 
+    /* Getter method for user budget */
     public String getBudget() {
         return this.userBudget;
     }
 
+    /* Getter method for user username */
     public String getUsername() {
         return this.userUsername;
     }
-    public ArrayList<Object> getEvents() {
-        return this.events;
+
+    /* Getter method for events data (MutableLiveData) */
+    public MutableLiveData<ArrayList<Object>> getEvents() {
+        return events;
     }
+
+    /* Getter method for profile picture information. Not currently in use */
     public String getProfilePic() { return this.profilePic; }
 }

@@ -92,44 +92,10 @@ public class SignupFragment extends Fragment {
         String password = binding.signupPassword.getText().toString();
         Map<String, Object> userData = buildUserDataObject();
         activity.userModel.addUser(email, password, userData);
-
-
-        /*mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String, Object> userData = buildUserDataObject();
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("Users").document(user.getUid())
-                                    .set(userData)
-                                    .addOnSuccessListener((OnSuccessListener<Void>) aVoid -> {
-                                        raiseResultToast("Account Successfully Created!");
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            raiseResultToast("Account Creation Failed.");
-                                        }
-                                    });
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        }
-                    }
-                });*/
     }
 
     private Map<String, Object> buildUserDataObject() {
 
-        //apparently you can't serialize arrays
-        //Object[] emptyEvents = {};
-        //Object[] emptyGroups = {};
-        //Object[] emptyInterests = {};
-        //Object[] emptyWishlists = {};
         List<Object> emptyEvents = new ArrayList<>();
         List<Object> emptyGroups = new ArrayList<>();
         List<Object> emptyInterests = new ArrayList<>();

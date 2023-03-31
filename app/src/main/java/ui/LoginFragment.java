@@ -60,13 +60,13 @@ public class LoginFragment extends Fragment {
 
                 String email = binding.loginEmail.getText().toString();
                 String password = binding.loginPassword.getText().toString();
-                Log.d(TAG, email);
-                Log.d(TAG, password);
                 if (email.isEmpty() || password.isEmpty()) {
                     Log.d(TAG, "Email or password was empty");
                     Toast.makeText(getContext(), "Please provide both an email and password.",
                             Toast.LENGTH_LONG).show();
                 } else {
+
+                    //this is skeleton logic for not signing in if firebase authentication fails
                     boolean result = activity.userModel.signIn(email, password);
                     if (true) {
                         NavHostFragment.findNavController(LoginFragment.this)
