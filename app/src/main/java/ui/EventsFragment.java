@@ -18,6 +18,9 @@ import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.EventsFragmentBinding;
 
 
+import java.util.ArrayList;
+
+import activities.LoginActivity;
 import adapters.EventAdapter;
 import data.UserModel;
 
@@ -31,6 +34,8 @@ public class EventsFragment extends Fragment {
     private String[] items;
     private String TAG = "SecondFragment";
 
+    private LoginActivity activity;
+
     private UserModel userModel;
 
     @Override
@@ -39,6 +44,7 @@ public class EventsFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
+        activity = (LoginActivity) getActivity();
         binding = EventsFragmentBinding.inflate(inflater, container, false);
 
         Log.d(TAG, "onCreateView called");
@@ -63,8 +69,9 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserModel.class);
-
+        //userModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserModel.class);
+        ArrayList<Object> events = activity.userModel.getEvents();
+        Log.d(TAG, events.toString());
 
         /*binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,19 +13,19 @@
         android:text="Gift Planner"
         android:textSize="35dp"
         android:textAllCaps="true"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
+        app:layout_constraintBottom_toTopOf="@id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/login_username"
+        android:id="@+id/login_email"
         android:layout_height="wrap_content"
         android:layout_width="300dp"
         android:inputType="text"
-        android:hint="Username"
+        android:hint="Email"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
+        app:layout_constraintBottom_toTopOf="@id/login_button"
         app:layout_constraintTop_toBottomOf="@id/textview_first"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,14 +38,14 @@
         android:inputType="textPassword"
         android:hint="Password"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/button_first"
-        app:layout_constraintTop_toBottomOf="@id/login_username"
+        app:layout_constraintBottom_toTopOf="@id/login_button"
+        app:layout_constraintTop_toBottomOf="@id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <Button
-        android:id="@+id/button_first"
+        android:id="@+id/login_button"
         android:layout_width="105dp"
         android:layout_height="wrap_content"
         android:text="Login"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@id/textview_first" />
 
     <Button
-        android:id="@+id/button_second"
+        android:id="@+id/signup_button"
         android:layout_width="105dp"
         android:layout_height="wrap_content"
         android:text="Sign up"
@@ -64,6 +64,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_first"
+        app:layout_constraintTop_toBottomOf="@id/login_button"
         app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

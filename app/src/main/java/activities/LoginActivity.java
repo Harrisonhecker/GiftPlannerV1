@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate Called");
         Log.d(TAG, "just before call to get ViewModel");
+        userModel = new UserModel();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -117,14 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        /*if (id == R.id.action_edit_profile){
-            Log.d(TAG, "Edit Profile pressed");
-            EditProfileFragment editProfileFragment = new EditProfileFragment();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.nav_host_fragment_content_main, editProfileFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }*/
 
         return super.onOptionsItemSelected(item);
     }
