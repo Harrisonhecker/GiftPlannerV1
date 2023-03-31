@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
+import data.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,7 +25,12 @@ public class EventModel extends ViewModel {
     private static final String TAG = "EventModel";
 
     public EventModel() {
+        //Pass in user as variable here
 
+        UserModel uModel = new UserModel();
+        uModel.getData();
+        //userData = uModel.getData(user);
+        Log.d(TAG,"here");
     }
 
 

@@ -65,6 +65,14 @@ public class EventsFragment extends Fragment {
 
         userModel = new ViewModelProvider((ViewModelStoreOwner) this).get(UserModel.class);
 
+        binding.addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(EventsFragment.this)
+                        .navigate(R.id.action_EventsFragment_to_AddEventFragment);
+            }
+        });
+
 
         /*binding.buttonSecond.setOnClickListener(new View.OnClickListener() {
             @Override

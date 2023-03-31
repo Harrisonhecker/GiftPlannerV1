@@ -23,7 +23,7 @@ public class UserModel extends ViewModel {
 
     private static final String TAG = "UserModel";
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersCollectionReference;
+    public CollectionReference usersCollectionReference;
 
     private String addedDocumentId;
 
@@ -63,6 +63,7 @@ public class UserModel extends ViewModel {
     }
 
     public void getData() {
+        Log.d(TAG,"inGetData");
         usersCollectionReference
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -79,6 +80,7 @@ public class UserModel extends ViewModel {
                         }
                     }
                 });
+        
 
 
     }
