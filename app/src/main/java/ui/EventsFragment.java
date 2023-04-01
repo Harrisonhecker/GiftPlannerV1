@@ -82,7 +82,13 @@ public class EventsFragment extends Fragment {
                 Log.d(TAG, data.toString());
             }
         });
-
+        binding.addEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(EventsFragment.this)
+                        .navigate(R.id.action_EventsFragment_to_AddEventFragment);
+            }
+        });
         binding.editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

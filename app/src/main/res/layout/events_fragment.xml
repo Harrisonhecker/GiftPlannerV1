@@ -90,9 +90,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit Profile" />
+    <Button
+        android:id="@+id/addEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Event" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/event_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 
 </LinearLayout>
