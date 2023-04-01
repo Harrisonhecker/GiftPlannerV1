@@ -15,8 +15,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 
 public class UserModel extends ViewModel {
@@ -26,6 +31,9 @@ public class UserModel extends ViewModel {
     public CollectionReference usersCollectionReference;
 
     private String addedDocumentId;
+
+    public QueryDocumentSnapshot result;
+
 
     public UserModel() {
 
@@ -62,15 +70,25 @@ public class UserModel extends ViewModel {
                 });
     }
 
-    public void getData() {
+    public void getData(String key) {
         Log.d(TAG,"inGetData");
+
         usersCollectionReference
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG,key);
+                                if(key.equals(document.getId())){
+                                    Log.d(TAG,"In if statement");
+                                    result = document;
+                                    Map<String, Object> documentData = document.getData();
+                                    document.get("events");
+                                    break;
+                                }
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Log.d(TAG, "isFromCache: " + document.getMetadata().isFromCache());
                                 Log.d(TAG, "hasPendingWrite: " + document.getMetadata().hasPendingWrites());
@@ -80,10 +98,11 @@ public class UserModel extends ViewModel {
                         }
                     }
                 });
-        
 
 
     }
+
+
 
     public void updateData() {
         usersCollectionReference.document(addedDocumentId)

@@ -25,12 +25,15 @@ public class EventModel extends ViewModel {
     private static final String TAG = "EventModel";
 
     public EventModel() {
-        //Pass in user as variable here
+        //Pass in userName as variable here
 
         UserModel uModel = new UserModel();
-        uModel.getData();
+        uModel.getData("Example User");
+        Log.d(TAG, String.valueOf(uModel.result));
+        //Log.d(TAG, document.getId() + " => " + document.getData());
+        //Log.d(TAG, "isFromCache: " + document.getMetadata().isFromCache());
+        //Log.d(TAG, "hasPendingWrite: " + document.getMetadata().hasPendingWrites());
         //userData = uModel.getData(user);
-        Log.d(TAG,"here");
     }
 
 
