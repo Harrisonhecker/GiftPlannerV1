@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -136,6 +137,22 @@ public class UserModel extends ViewModel {
                     Log.w(TAG, "Error updating document", e);
                 }
             });
+    }
+
+    public void updateEventsArray(Map<String, Object> newEvent) {
+        usersCollectionReference.document(userUID).update("events", FieldValue.arrayUnion(newEvent))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Item added to array successfully!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding item to array", e);
+                    }
+                });
     }
 
     /* Delete a user from the database */

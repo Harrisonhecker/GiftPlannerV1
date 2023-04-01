@@ -19,6 +19,8 @@ import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.AddEventFragmentBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import activities.LoginActivity;
 import data.EventModel;
@@ -30,6 +32,8 @@ public class AddEventFragment extends Fragment {
     private EventModel eventModel;
 
     private LoginActivity activity;
+
+    private String TAG = "AddEventFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,17 +63,51 @@ public class AddEventFragment extends Fragment {
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.userModel.getUser();
-                MutableLiveData<ArrayList<Object>> test = activity.userModel.getEvents();
-                Log.d("Yes", String.valueOf(test.getValue()));
-                //Add the event
-                //Navigate
+
+                //not necessary getUser is called when user signs in
+                //activity.userModel.getUser();
+
+                //construct a new event object with current values
+                Map<String, Object> newEvent = constructEventObject();
+
+                //get list of events
+                MutableLiveData<ArrayList<Object>> events = activity.userModel.getEvents();
+
+                //add event to list of events
+                //Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
+                //events.getValue().add(newEvent);
+                //Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
+
+                //update the user's events array
+                //Map<String, Object> update = new HashMap<>();
+                //update.put("events", events);
+                activity.userModel.updateEventsArray(newEvent);
+
             }
         });
 
     }
 
+    private Map<String, Object> constructEventObject() {
+        Map<String, Object> data = new HashMap<>();
 
+        String name = binding.eventName.getText().toString();
+        data.put("name", name);
+
+        String date = binding.date.getText().toString();
+        data.put("date", date);
+
+        String budget = binding.budget.getText().toString();
+        data.put("purchasing_budget", budget);
+
+        boolean notify = binding.remindSwitch.isChecked();
+        data.put("notify", notify);
+
+        data.put("budget_met", false);
+        data.put("gifts", new ArrayList<Map<String, Object>>());
+
+        return data;
+    }
 
     @Override
     public void onDestroyView() {

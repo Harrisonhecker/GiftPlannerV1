@@ -49,13 +49,23 @@
         android:inputType="text"
         android:hint="Spending Budget"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@id/add_button"
+        app:layout_constraintBottom_toTopOf="@id/remind_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
 
 
-
+    <Switch
+        android:id="@+id/remind_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Notify Me Before Event"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/add_button"/>
 
     <Button
         android:id="@+id/add_button"
