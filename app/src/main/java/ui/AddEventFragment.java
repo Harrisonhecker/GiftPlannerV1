@@ -76,9 +76,9 @@ public class AddEventFragment extends Fragment {
                 MutableLiveData<ArrayList<Object>> events = activity.userModel.getEvents();
 
                 //add event to list of events
-                //Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
-                //events.getValue().add(newEvent);
-                //Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
+                Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
+                events.getValue().add(newEvent);
+                Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
 
                 //update the user's events array
                 //Map<String, Object> update = new HashMap<>();
