@@ -1,9 +1,11 @@
 package adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +46,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventHolder> {
      */
     @Override
     public void onBindViewHolder(@NonNull EventHolder holder, int position) {
+        //Button button = new Button(holder.itemView.getContext());
+        //button.setText(testList[position].toString());
+        Log.d("Adapter",testList[position].toString());
         holder.mEventTextView.setText(testList[position].toString());
+        //holder.mEventTextView.setText(testList[position].toString());
     }
 
     /* The third of three methods that need to be overridden when creating an adapter. This

@@ -2,6 +2,8 @@ package adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +17,7 @@ within a RecyclerView.
  */
 public class EventHolder extends RecyclerView.ViewHolder {
 
-    public TextView mEventTextView;
+    public Button mEventTextView;
 
     /* Constructor. Creates the item to view and (for right now) sets its data */
     EventHolder(LayoutInflater inflater, ViewGroup parent) {
