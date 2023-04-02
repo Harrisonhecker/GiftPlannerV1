@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -21,6 +24,7 @@ import com.example.giftplannerv1.databinding.EventsFragmentBinding;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Map;
 
 import activities.LoginActivity;
 import adapters.EventAdapter;
@@ -80,6 +84,8 @@ public class EventsFragment extends Fragment {
             public void onChanged(ArrayList<Object> data) {
                 Log.d(TAG, "Events retrieved");
                 Log.d(TAG, data.toString());
+                initDataset();
+                eventAdapter.notifyDataSetChanged();
             }
         });
         binding.addEvent.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +93,7 @@ public class EventsFragment extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(EventsFragment.this)
                         .navigate(R.id.action_EventsFragment_to_AddEventFragment);
+
             }
         });
         binding.editProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +106,29 @@ public class EventsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        activity.userModel.getEvents().observe(getViewLifecycleOwner(),
+                new Observer<ArrayList<Object>>() {
+
+                    //when the data loads, do something
+                    @Override
+                    public void onChanged(ArrayList<Object> data) {
+                        Log.d(TAG, "Events retrieved");
+                        Log.d(TAG, data.toString());
+                        initDataset();
+                        eventAdapter.notifyDataSetChanged();
+                    }
+        });
+
+        // Refresh your fragment's data here
+        // For example, if you are populating a list, you can call the method to repopulate the list here
+        // Or if you are fetching data from an API, you can call the API here
+    }
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
@@ -106,10 +136,22 @@ public class EventsFragment extends Fragment {
 
     private void initDataset() {
 
-        this.items = new String[10];
-
-        for (int i = 0; i < 10; i++) {
-            this.items[i] = "This is element #" + i;
+        if (activity.userModel.getEvents().getValue() != null) {
+            this.items = new String[activity.userModel.getEvents().getValue().size()];
+            for (int i = 0; i < this.items.length; i++) {
+                    Map<String, Object> event = (Map<String, Object>) activity.userModel.getEvents().getValue().get(i);
+                    this.items[i] = String.valueOf(event.get("name"));
+                    Log.d(TAG, this.items[i]);
+            }
+        } else {
+            this.items = new String[1];
+            this.items[0] = "Events are currently loading";
         }
+        if (this.eventAdapter != null) {
+            this.eventAdapter.updateData(this.items);
+        }
+
+
     }
+
 }

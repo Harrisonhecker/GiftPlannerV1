@@ -63,5 +63,9 @@
         android:id="@+id/addEventFragment"
         android:name="ui.AddEventFragment"
         android:label="add_event_fragment"
-        tools:layout="@layout/add_event_fragment" />
+        tools:layout="@layout/add_event_fragment" >
+        <action
+            android:id="@+id/action_addEventFragment_to_EventsFragment"
+            app:destination="@id/EventsFragment" />
+    </fragment>
 </navigation>

@@ -23,6 +23,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventHolder> {
         testList = items;
     }
 
+    public void updateData(String[] items) {
+        testList = items;
+        notifyDataSetChanged();
+    }
+
     /* The first of three methods that need to be overridden when creating an adapter. This
     method is responsible for creating a new ViewHolder object that will be used to display a new
      item in the list. */

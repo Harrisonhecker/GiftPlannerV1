@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -82,6 +84,11 @@ public class AddEventFragment extends Fragment {
                 //Map<String, Object> update = new HashMap<>();
                 //update.put("events", events);
                 activity.userModel.updateEventsArray(newEvent);
+
+
+                NavHostFragment.findNavController(AddEventFragment.this)
+                        .navigate(R.id.action_addEventFragment_to_EventsFragment);
+
 
             }
         });

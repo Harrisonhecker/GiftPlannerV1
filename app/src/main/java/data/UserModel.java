@@ -5,7 +5,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.giftplannerv1.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import ui.EventsFragment;
 
 
 public class UserModel extends ViewModel {
@@ -145,6 +149,7 @@ public class UserModel extends ViewModel {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Item added to array successfully!");
+                        // need to add code to navigate back to events page
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
