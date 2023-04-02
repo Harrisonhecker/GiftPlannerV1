@@ -85,9 +85,9 @@ public class AddEventFragment extends Fragment {
                 //update.put("events", events);
                 activity.userModel.updateEventsArray(newEvent);
 
-
                 NavHostFragment.findNavController(AddEventFragment.this)
                         .navigate(R.id.action_addEventFragment_to_EventsFragment);
+
 
 
             }

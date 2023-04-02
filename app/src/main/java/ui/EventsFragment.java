@@ -69,6 +69,7 @@ public class EventsFragment extends Fragment {
         this.eventLayoutManager = new LinearLayoutManager(this.getContext());
         this.eventRecyclerView.setLayoutManager(this.eventLayoutManager);
 
+
         return binding.getRoot();
     }
 
@@ -85,7 +86,6 @@ public class EventsFragment extends Fragment {
                 Log.d(TAG, "Events retrieved");
                 Log.d(TAG, data.toString());
                 initDataset();
-                eventAdapter.notifyDataSetChanged();
             }
         });
         binding.addEvent.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,6 @@ public class EventsFragment extends Fragment {
                         Log.d(TAG, "Events retrieved");
                         Log.d(TAG, data.toString());
                         initDataset();
-                        eventAdapter.notifyDataSetChanged();
                     }
         });
 
@@ -136,17 +135,27 @@ public class EventsFragment extends Fragment {
 
     private void initDataset() {
 
+        // if data from firebase is read in
         if (activity.userModel.getEvents().getValue() != null) {
             this.items = new String[activity.userModel.getEvents().getValue().size()];
-            for (int i = 0; i < this.items.length; i++) {
+
+            //if there are more than 0 events associated with the user
+            if (this.items.length > 0) {
+                for (int i = 0; i < this.items.length; i++) {
                     Map<String, Object> event = (Map<String, Object>) activity.userModel.getEvents().getValue().get(i);
                     this.items[i] = String.valueOf(event.get("name"));
                     Log.d(TAG, this.items[i]);
+                }
+            } else { // if the user has not added any events yet
+                this.items = new String[1];
+                this.items[0] = "You have no events";
             }
-        } else {
+        } else { // if the data from firebase has not been received yet
             this.items = new String[1];
             this.items[0] = "Events are currently loading";
         }
+
+        // first time initDataset is called, the eventAdapter has not been declared yet
         if (this.eventAdapter != null) {
             this.eventAdapter.updateData(this.items);
         }
