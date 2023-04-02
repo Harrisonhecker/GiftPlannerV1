@@ -17,12 +17,12 @@ within a RecyclerView.
  */
 public class EventHolder extends RecyclerView.ViewHolder {
 
-    public Button mEventTextView;
+    public Button mEventButton;
 
     /* Constructor. Creates the item to view and (for right now) sets its data */
     EventHolder(LayoutInflater inflater, ViewGroup parent) {
         super(inflater.inflate(R.layout.event_list_item, parent, false));
-        mEventTextView = itemView.findViewById(R.id.event_info);
+        mEventButton = itemView.findViewById(R.id.event_info);
     }
 
     /* This method currently is not needed. But eventually we will probably use this to set all

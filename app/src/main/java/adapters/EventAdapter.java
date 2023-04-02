@@ -49,7 +49,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventHolder> {
         //Button button = new Button(holder.itemView.getContext());
         //button.setText(testList[position].toString());
         Log.d("Adapter",testList[position].toString());
-        holder.mEventTextView.setText(testList[position].toString());
+        holder.mEventButton.setText(testList[position].toString());
         //holder.mEventTextView.setText(testList[position].toString());
     }
 
