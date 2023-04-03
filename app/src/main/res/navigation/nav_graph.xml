@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_viewEventFragment_to_viewMemberFragment"
             app:destination="@id/viewMemberFragment" />
+        <action
+            android:id="@+id/action_viewEventFragment_to_EventsFragment"
+            app:destination="@id/EventsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addMemberFragment"

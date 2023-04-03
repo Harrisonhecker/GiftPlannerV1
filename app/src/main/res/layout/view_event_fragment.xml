@@ -93,10 +93,22 @@
         />
 
     <Button
+        android:id="@+id/back_to_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
+
+    <Button
         android:id="@+id/addMember"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Member" />
+    <Button
+        android:id="@+id/delete_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete Event"
+        android:layout_gravity="right"/>
 
 
 </LinearLayout>

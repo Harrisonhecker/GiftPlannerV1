@@ -87,9 +87,15 @@ public class AddEventFragment extends Fragment {
 
                 NavHostFragment.findNavController(AddEventFragment.this)
                         .navigate(R.id.action_addEventFragment_to_EventsFragment);
+            }
+        });
 
+        binding.backToEventsList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-
+                NavHostFragment.findNavController(AddEventFragment.this)
+                        .navigate(R.id.action_addEventFragment_to_EventsFragment);
             }
         });
 

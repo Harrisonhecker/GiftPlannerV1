@@ -310,7 +310,19 @@ public class UserModel extends ViewModel {
         currentGift = new HashMap<>();
 
         //update firebase
-        updateGiftsArray();
+        usersCollectionReference.document(userUID).update("events", events.getValue())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Events field updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error updating events field", e);
+                    }
+                });
     }
 
     public void deleteMember() {
@@ -323,6 +335,19 @@ public class UserModel extends ViewModel {
         //update firebase
         updateMembersArray();
     }
+
+    public void deleteEvent() {
+        //remove gift from local gift array
+        events.getValue().remove(currentEvent);
+
+        //set currentMember to empty
+        currentEvent = new HashMap<>();
+
+        //update firebase
+        updateMembersArray();
+    }
+
+
 
     /* Delete a user from the database */
     public void deleteUser() {
