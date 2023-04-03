@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_EventsFragment_to_AddEventFragment"
             app:destination="@id/addEventFragment" />
+        <action
+            android:id="@+id/action_EventsFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
     </fragment>
 
     <fragment
@@ -68,4 +71,51 @@
             android:id="@+id/action_addEventFragment_to_EventsFragment"
             app:destination="@id/EventsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/viewEventFragment"
+        android:name="ui.ViewEventFragment"
+        android:label="ViewEventFragment"
+        tools:layout="@layout/view_event_fragment">
+        <action
+            android:id="@+id/action_viewEventFragment_to_addMemberFragment"
+            app:destination="@id/addMemberFragment" />
+        <action
+            android:id="@+id/action_viewEventFragment_to_viewMemberFragment"
+            app:destination="@id/viewMemberFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addMemberFragment"
+        android:name="ui.AddMemberFragment"
+        android:label="add_member_fragment"
+        tools:layout="@layout/add_member_fragment" >
+        <action
+            android:id="@+id/action_addMemberFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewMemberFragment"
+        android:name="ui.ViewMemberFragment"
+        android:label="ViewMemberFragment"
+        tools:layout="@layout/view_member_fragment">
+        <action
+            android:id="@+id/action_viewMemberFragment_to_addGiftFragment"
+            app:destination="@id/addGiftFragment" />
+        <action
+            android:id="@+id/action_viewMemberFragment_to_viewGiftFragment"
+            app:destination="@id/viewGiftFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGiftFragment"
+        android:name="ui.AddGiftFragment"
+        android:label="add_gift_fragment"
+        tools:layout="@layout/add_gift_fragment" >
+        <action
+            android:id="@+id/action_addGiftFragment_to_viewMemberFragment"
+            app:destination="@id/viewMemberFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewGiftFragment"
+        android:name="ui.ViewGiftFragment"
+        android:label="view_gift_fragment"
+        tools:layout="@layout/view_gift_fragment" />
 </navigation>

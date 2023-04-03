@@ -16,9 +16,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -44,6 +48,15 @@ public class UserModel extends ViewModel {
     private String profilePic;
     private MutableLiveData<ArrayList<Object>> events;
 
+    private MutableLiveData<ArrayList<Object>> members;
+
+    private MutableLiveData<ArrayList<Object>> gifts;
+    public Map<String,Object> currentEvent;
+
+    public Map<String,Object> currentMember;
+
+    public Map<String,Object> currentGift;
+
 
     public UserModel() {
 
@@ -55,6 +68,8 @@ public class UserModel extends ViewModel {
         Log.d(TAG, String.valueOf(usersCollectionReference));
 
         events = new MutableLiveData<>();
+        members = new MutableLiveData<>();
+        gifts = new MutableLiveData<>();
     }
 
     /* Add a user to the database */
@@ -160,6 +175,40 @@ public class UserModel extends ViewModel {
                 });
     }
 
+    public void updateMembersArray(Map<String, Object> newMember) {
+
+// Get a reference to the newly added event in the "events" array
+
+        Query query = usersCollectionReference.document(userUID).collection("events").whereEqualTo("name", currentEvent.get("name"));
+
+// Update the "members" field of the event
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    // Loop through the query result to get the matching document reference
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        DocumentReference eventRef = document.getReference();
+
+                        // Update the "members" field of the event
+                        eventRef.update("members", FieldValue.arrayUnion(newMember));
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+
+
+
+    public void updateGiftsArray(Map<String, Object> newGift) {
+
+
+    }
+
     /* Delete a user from the database */
     public void deleteUser() {
         usersCollectionReference.document("")
@@ -249,6 +298,53 @@ public class UserModel extends ViewModel {
         return events;
     }
 
+    public MutableLiveData<ArrayList<Object>> getMembers() {
+        return members;
+    }
+
+    public MutableLiveData<ArrayList<Object>> getGifts() {
+        return gifts;
+    }
+
+
+
+    public void getEvent(String name){
+        for(int i = 0; i < events.getValue().size();i++){
+            Map<String, Object> event = (Map<String, Object>)
+                    events.getValue().get(i);
+            String eventName = String.valueOf(event.get("name"));
+
+            if(eventName.equals(name)){
+                currentEvent = (Map<String, Object>) events.getValue().get(i);
+                members.setValue((ArrayList<Object>) currentEvent.get("members"));
+            }
+        }
+    }
+
+    public void getMember(String name){
+        for(int i = 0; i < members.getValue().size();i++){
+            Map<String, Object> member = (Map<String, Object>)
+                    members.getValue().get(i);
+            String memberName = String.valueOf(member.get("name"));
+
+            if(memberName.equals(name)){
+                currentMember = (Map<String, Object>) members.getValue().get(i);
+                gifts.setValue((ArrayList<Object>) currentMember.get("gifts"));
+            }
+        }
+    }
+
+    public void getGift(String name){
+        for(int i = 0; i < gifts.getValue().size();i++){
+            Map<String, Object> gift = (Map<String, Object>)
+                    gifts.getValue().get(i);
+            String giftName = String.valueOf(gift.get("name"));
+
+            if(giftName.equals(name)){
+                currentGift = (Map<String, Object>) gifts.getValue().get(i);
+            }
+        }
+    }
     /* Getter method for profile picture information. Not currently in use */
     public String getProfilePic() { return this.profilePic; }
 }

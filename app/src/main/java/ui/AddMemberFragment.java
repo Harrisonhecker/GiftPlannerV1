@@ -1,8 +1,6 @@
 package ui;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -19,6 +15,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.giftplannerv1.R;
 import com.example.giftplannerv1.databinding.AddEventFragmentBinding;
+import com.example.giftplannerv1.databinding.AddMemberFragmentBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,15 +24,10 @@ import java.util.Map;
 import activities.LoginActivity;
 import data.EventModel;
 
-public class AddEventFragment extends Fragment {
-
-    private AddEventFragmentBinding binding;
-
-    private EventModel eventModel;
+public class AddMemberFragment extends Fragment {
+    private AddMemberFragmentBinding binding;
 
     private LoginActivity activity;
-
-    private String TAG = "AddEventFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +43,7 @@ public class AddEventFragment extends Fragment {
             Bundle savedInstanceState
     ) {
 
-        binding = AddEventFragmentBinding.inflate(inflater, container, false);
+        binding = AddMemberFragmentBinding.inflate(inflater, container, false);
 
 
         return binding.getRoot();
@@ -60,9 +52,7 @@ public class AddEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        eventModel = new ViewModelProvider((ViewModelStoreOwner) this).get(EventModel.class);
-        binding.addButton.setOnClickListener(new View.OnClickListener() {
+        binding.addMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -70,48 +60,35 @@ public class AddEventFragment extends Fragment {
                 //activity.userModel.getUser();
 
                 //construct a new event object with current values
-                Map<String, Object> newEvent = constructEventObject();
+                Map<String, Object> newMember = constructMemberObject();
 
                 //get list of events
-                MutableLiveData<ArrayList<Object>> events = activity.userModel.getEvents();
+                MutableLiveData<ArrayList<Object>> members = activity.userModel.getMembers();
 
                 //add event to list of events
-                Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
-                events.getValue().add(newEvent);
-                Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
+                //Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
+                members.getValue().add(newMember);
+                //Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
 
                 //update the user's events array
                 //Map<String, Object> update = new HashMap<>();
                 //update.put("events", events);
-                activity.userModel.updateEventsArray(newEvent);
+                activity.userModel.updateMembersArray(newMember);
 
-                NavHostFragment.findNavController(AddEventFragment.this)
-                        .navigate(R.id.action_addEventFragment_to_EventsFragment);
 
+                NavHostFragment.findNavController(AddMemberFragment.this)
+                        .navigate(R.id.action_addMemberFragment_to_viewEventFragment);
 
 
             }
         });
-
     }
-
-    private Map<String, Object> constructEventObject() {
+    private Map<String, Object> constructMemberObject() {
         Map<String, Object> data = new HashMap<>();
 
-        String name = binding.eventName.getText().toString();
+        String name = binding.name.getText().toString();
         data.put("name", name);
-
-        String date = binding.date.getText().toString();
-        data.put("date", date);
-
-        String budget = binding.budget.getText().toString();
-        data.put("purchasing_budget", budget);
-
-        boolean notify = binding.remindSwitch.isChecked();
-        data.put("notify", notify);
-
-        data.put("budget_met", false);
-        data.put("members", new ArrayList<Map<String, Object>>());
+        data.put("gifts", new ArrayList<Map<String, Object>>());
 
         return data;
     }
