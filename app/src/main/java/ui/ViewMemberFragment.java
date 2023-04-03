@@ -78,6 +78,24 @@ public class ViewMemberFragment extends Fragment {
             }
         });
 
+        binding.backToEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(ViewMemberFragment.this)
+                        .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
+
+            }
+        });
+
+        binding.deleteMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.userModel.deleteMember();
+                NavHostFragment.findNavController(ViewMemberFragment.this)
+                        .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
+            }
+        });
+
         // register an observer on the events MutableLiveData
         activity.userModel.getEvents().observe(getViewLifecycleOwner(),
                 new Observer<ArrayList<Object>>() {

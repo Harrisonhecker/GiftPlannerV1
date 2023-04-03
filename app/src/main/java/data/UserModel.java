@@ -261,7 +261,6 @@ public class UserModel extends ViewModel {
 
     }
 
-
     public void updateGiftsArray() {
 
         // iterate over all events
@@ -312,6 +311,17 @@ public class UserModel extends ViewModel {
 
         //update firebase
         updateGiftsArray();
+    }
+
+    public void deleteMember() {
+        //remove gift from local gift array
+        members.getValue().remove(currentMember);
+
+        //set currentMember to empty
+        currentMember = new HashMap<>();
+
+        //update firebase
+        updateMembersArray();
     }
 
     /* Delete a user from the database */

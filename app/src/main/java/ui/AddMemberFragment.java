@@ -81,6 +81,15 @@ public class AddMemberFragment extends Fragment {
 
             }
         });
+
+        binding.backToEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavHostFragment.findNavController(AddMemberFragment.this)
+                        .navigate(R.id.action_addMemberFragment_to_viewEventFragment);
+            }
+        });
     }
     private Map<String, Object> constructMemberObject() {
         Map<String, Object> data = new HashMap<>();
