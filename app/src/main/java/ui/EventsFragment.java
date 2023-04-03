@@ -62,7 +62,7 @@ public class EventsFragment extends Fragment {
         this.eventRecyclerView = binding.eventRecyclerView;
 
         // create and set the adapter for the RecyclerView
-        this.eventAdapter = new EventAdapter(this.items);
+        this.eventAdapter = new EventAdapter(EventsFragment.this,this.items, activity.userModel);
         this.eventRecyclerView.setAdapter(this.eventAdapter);
 
         // create and set the LayoutManager for the RecyclerView
