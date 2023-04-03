@@ -24,7 +24,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import ui.EventsFragment;
@@ -128,7 +130,19 @@ public class UserModel extends ViewModel {
                         userBudget = document.getString("spending_budget");
                         userUsername = document.getString("username");
 
-                        events.setValue((ArrayList<Object>) document.get("events"));
+                        String returnType = document.get("events").getClass().getSimpleName();
+                        Log.d(TAG, returnType);
+
+                        //document.get("events") returns a list if non-empty and a map if empty
+                        if (returnType.equals("ArrayList")) {
+                            events.setValue((ArrayList<Object>) document.get("events"));
+                        } else {
+                            events.setValue(new ArrayList<Object>());
+                        }
+
+                        members.setValue(new ArrayList<>());
+                        gifts.setValue(new ArrayList<>());
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -177,41 +191,120 @@ public class UserModel extends ViewModel {
 
     public void updateMembersArray(Map<String, Object> newMember) {
 
-// Get a reference to the newly added event in the "events" array
+        // iterate over all events
+        for(int i = 0; i < events.getValue().size();i++) {
+            Map<String, Object> event = (Map<String, Object>)
+                    events.getValue().get(i);
 
-        Query query = usersCollectionReference.document(userUID).collection("events").whereEqualTo("name", currentEvent.get("name"));
+            // find event inside the events array and replace its members array
+            if (event.get("name") == currentEvent.get("name")) {
+                event.replace("members", members.getValue());
+            }
+        }
 
-// Update the "members" field of the event
+        //update the entire events array...not ideal but it works
+        usersCollectionReference.document(userUID).update("events", events.getValue())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Events field updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error updating events field", e);
+                    }
+                });
+
+        /*
+        // Get a reference to the newly added event in the "events" array
+
+        //Query query = usersCollectionReference.document(userUID).collection("events")
+        // .whereEqualTo("name", currentEvent.get("name"));
+
+        Query query =
+                usersCollectionReference.whereArrayContains("events", currentEvent);
+
+        // Update the "members" field of the event
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
+                    Log.d(TAG, "Made it in the onComplete method");
                     // Loop through the query result to get the matching document reference
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        DocumentReference eventRef = document.getReference();
+                        DocumentReference docRef = document.getReference();
 
+                        //get the
+                        ArrayList<Map<String, Object>> events =
+                                (ArrayList<Map<String, Object>>) document.get(
+                                "events");
+                        for (Map<String, Object> event : events) {
+                            if (event.get("name") == currentEvent.get("name")) {
+                                event.replace("members", members);
+                            }
+                        }
+
+
+                        //Log.d(TAG, "inside loop");
                         // Update the "members" field of the event
-                        eventRef.update("members", FieldValue.arrayUnion(newMember));
+                        //eventRef.update("members", FieldValue.arrayUnion(newMember));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
-        });
+        });*/
+
+
     }
-
-
 
 
     public void updateGiftsArray(Map<String, Object> newGift) {
 
+        // iterate over all events
+        for(int i = 0; i < events.getValue().size();i++) {
+            Map<String, Object> event = (Map<String, Object>)
+                    events.getValue().get(i);
+
+            // find event inside the events array
+            if (event.get("name") == currentEvent.get("name")) {
+
+                // iterate over all members
+                for(int j = 0; j < members.getValue().size();j++) {
+                    Map<String, Object> member = (Map<String, Object>)
+                            members.getValue().get(j);
+
+                    //find member and update gifts array
+                    if (member.get("name") == currentMember.get("name")) {
+                        member.replace("gifts", gifts.getValue());
+                    }
+                }
+            }
+        }
+
+        //update entire events array...not ideal but it works
+        usersCollectionReference.document(userUID).update("events", events.getValue())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Events field updated successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error updating events field", e);
+                    }
+                });
 
     }
 
     /* Delete a user from the database */
     public void deleteUser() {
-        usersCollectionReference.document("")
+        usersCollectionReference.document(userUID)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -317,6 +410,9 @@ public class UserModel extends ViewModel {
             if(eventName.equals(name)){
                 currentEvent = (Map<String, Object>) events.getValue().get(i);
                 members.setValue((ArrayList<Object>) currentEvent.get("members"));
+                if (members.getValue() == null) {
+                    members.setValue(new ArrayList<>());
+                }
             }
         }
     }

@@ -24,7 +24,8 @@ import activities.LoginActivity;
 import adapters.ViewEventAdapter;
 import data.UserModel;
 
-public class ViewEventFragment extends Fragment {
+public class
+ViewEventFragment extends Fragment {
     private ViewEventFragmentBinding binding;
 
     private RecyclerView viewEventRecyclerView;
