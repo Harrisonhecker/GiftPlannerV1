@@ -100,17 +100,27 @@ public class ViewMemberFragment extends Fragment {
     }
     private void initDataset() {
 
+        // if data from firebase is read in
         if (activity.userModel.getGifts().getValue() != null) {
             this.items = new String[activity.userModel.getGifts().getValue().size()];
-            for (int i = 0; i < this.items.length; i++) {
-                Map<String, Object> gift = (Map<String, Object>) activity.userModel.getGifts().getValue().get(i);
-                this.items[i] = String.valueOf(gift.get("name"));
-                Log.d(TAG, this.items[i]);
+
+            //if there are more than 0 events associated with the user
+            if (this.items.length > 0) {
+                for (int i = 0; i < this.items.length; i++) {
+                    Map<String, Object> gift = (Map<String, Object>) activity.userModel.getGifts().getValue().get(i);
+                    this.items[i] = String.valueOf(gift.get("name"));
+                    Log.d(TAG, this.items[i]);
+                }
+            } else { // if the user has not added any events yet
+                this.items = new String[1];
+                this.items[0] = "No gifts added for this member";
             }
-        } else {
+        } else { // if the data from firebase has not been received yet
             this.items = new String[1];
             this.items[0] = "Gifts are currently loading";
         }
+
+        // first time initDataset is called, the eventAdapter has not been declared yet
         if (this.viewMemberAdapter != null) {
             this.viewMemberAdapter.updateData(this.items);
         }
