@@ -189,7 +189,7 @@ public class UserModel extends ViewModel {
                 });
     }
 
-    public void updateMembersArray(Map<String, Object> newMember) {
+    public void updateMembersArray() {
 
         // iterate over all events
         for(int i = 0; i < events.getValue().size();i++) {
@@ -262,7 +262,7 @@ public class UserModel extends ViewModel {
     }
 
 
-    public void updateGiftsArray(Map<String, Object> newGift) {
+    public void updateGiftsArray() {
 
         // iterate over all events
         for(int i = 0; i < events.getValue().size();i++) {
@@ -300,6 +300,18 @@ public class UserModel extends ViewModel {
                     }
                 });
 
+    }
+
+    public void deleteGift() {
+
+        //remove gift from local gift array
+        gifts.getValue().remove(currentGift);
+
+        //set currentGift to empty
+        currentGift = new HashMap<>();
+
+        //update firebase
+        updateGiftsArray();
     }
 
     /* Delete a user from the database */
@@ -398,8 +410,6 @@ public class UserModel extends ViewModel {
     public MutableLiveData<ArrayList<Object>> getGifts() {
         return gifts;
     }
-
-
 
     public void getEvent(String name){
         for(int i = 0; i < events.getValue().size();i++){

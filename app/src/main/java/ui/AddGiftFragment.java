@@ -74,7 +74,7 @@ public class AddGiftFragment extends Fragment {
                 //update the user's events array
                 //Map<String, Object> update = new HashMap<>();
                 //update.put("events", events);
-                activity.userModel.updateGiftsArray(newGift);
+                activity.userModel.updateGiftsArray();
 
 
                 NavHostFragment.findNavController(AddGiftFragment.this)
@@ -83,7 +83,17 @@ public class AddGiftFragment extends Fragment {
 
             }
         });
+
+        binding.backToMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavHostFragment.findNavController(AddGiftFragment.this)
+                        .navigate(R.id.action_addGiftFragment_to_viewMemberFragment);
+            }
+        });
     }
+
     private Map<String, Object> constructGiftObject() {
         Map<String, Object> data = new HashMap<>();
 

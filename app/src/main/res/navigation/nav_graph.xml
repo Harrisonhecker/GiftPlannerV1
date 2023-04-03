@@ -117,5 +117,9 @@
         android:id="@+id/viewGiftFragment"
         android:name="ui.ViewGiftFragment"
         android:label="view_gift_fragment"
-        tools:layout="@layout/view_gift_fragment" />
+        tools:layout="@layout/view_gift_fragment" >
+    <action
+        android:id="@+id/action_viewGiftFragment_to_viewMemberFragment"
+        app:destination="@id/viewMemberFragment" />
+    </fragment>
 </navigation>

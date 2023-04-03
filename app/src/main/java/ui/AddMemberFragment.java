@@ -73,7 +73,7 @@ public class AddMemberFragment extends Fragment {
                 //update the user's events array
                 //Map<String, Object> update = new HashMap<>();
                 //update.put("events", events);
-                activity.userModel.updateMembersArray(newMember);
+                activity.userModel.updateMembersArray();
 
                 NavHostFragment.findNavController(AddMemberFragment.this)
                         .navigate(R.id.action_addMemberFragment_to_viewEventFragment);
