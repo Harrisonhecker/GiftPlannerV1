@@ -34,9 +34,7 @@ import activities.LoginActivity;
 public class SignupFragment extends Fragment {
 
     private SignupFragmentBinding binding;
-
     private FirebaseAuth mAuth;
-
     private String TAG = "SignupFragment";
     private LoginActivity activity;
 
@@ -45,7 +43,6 @@ public class SignupFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = (LoginActivity) getActivity();
         mAuth = FirebaseAuth.getInstance();
-
     }
 
     @Override
@@ -55,68 +52,91 @@ public class SignupFragment extends Fragment {
     ) {
 
         binding = SignupFragmentBinding.inflate(inflater, container, false);
-
         Log.d(TAG, "onCreateView called");
-
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //if user wants to create their account
         binding.finishSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //create a user object and add it to the database
                 createUser();
 
+                // navigate to the main page that lists all events
                 NavHostFragment.findNavController(SignupFragment.this)
                         .navigate(R.id.action_SignupFragment_to_EventsFragment);
 
             }
         });
 
+        // if user wants to go back to login page
         binding.backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // navigate back into the login page
                 NavHostFragment.findNavController(SignupFragment.this)
                         .navigate(R.id.action_SignupFragment_to_LoginFragment);
             }
         });
     }
 
+    /* Create the user object and add it to the database */
     private void createUser() {
 
+        // find the email and password
         String email = binding.signupEmail.getText().toString();
         String password = binding.signupPassword.getText().toString();
+
+        // create the user object
         Map<String, Object> userData = buildUserDataObject();
+
+        // add the user object to the database
+        // the email and password are passed as separate parameters for firebase to use for auth
         activity.userModel.addUser(email, password, userData);
     }
 
+    /* Build the user database object */
     private Map<String, Object> buildUserDataObject() {
 
-        List<Object> emptyEvents = new ArrayList<>();
-        List<Object> emptyGroups = new ArrayList<>();
-        List<Object> emptyInterests = new ArrayList<>();
-        List<Object> emptyWishlists = new ArrayList<>();
-
         Map<String, Object> data = new HashMap<>();
-        data.put(getString(R.string.firebase_email), binding.signupEmail.getText().toString());
+
+        // set events
+        List<Object> emptyEvents = new ArrayList<>();
         data.put(getString(R.string.firebase_events), emptyEvents);
-        data.put(getString(R.string.firebase_first_name), binding.signupFirstname.getText().toString());
+
+        // set groups
+        List<Object> emptyGroups = new ArrayList<>();
         data.put(getString(R.string.firebase_groups), emptyGroups);
+
+        // set interests
+        List<Object> emptyInterests = new ArrayList<>();
         data.put(getString(R.string.firebase_interests), emptyInterests);
+
+        // set wishlists
+        List<Object> emptyWishlists = new ArrayList<>();
+        data.put(getString(R.string.firebase_wishlists), emptyWishlists);
+
+        //set all general account info
+        data.put(getString(R.string.firebase_email), binding.signupEmail.getText().toString());
+        data.put(getString(R.string.firebase_first_name), binding.signupFirstname.getText().toString());
         data.put(getString(R.string.firebase_last_name), binding.signupLastname.getText().toString());
         data.put(getString(R.string.firebase_password), binding.signupPassword.getText().toString());
         data.put(getString(R.string.firebase_spending_budget), binding.signupBudget.getText().toString());
         data.put(getString(R.string.firebase_username), binding.signupUsername.getText().toString());
-        data.put(getString(R.string.firebase_wishlists), emptyWishlists);
+
+        // will be used eventually for profile picture
         data.put("profile_picture", "");
 
         return data;
     }
 
+    /* debugging method */
     private void printInformation() {
         Log.d(TAG, "printInformation() called");
         String firstName = binding.signupFirstname.getText().toString();
@@ -135,6 +155,7 @@ public class SignupFragment extends Fragment {
 
     }
 
+    /* Show result for if account creation succeeded or failed */
     public void raiseResultToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         Log.d(TAG, message);

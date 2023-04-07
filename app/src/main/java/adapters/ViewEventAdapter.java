@@ -28,8 +28,7 @@ public class ViewEventAdapter extends RecyclerView.Adapter<ViewEventHolder> {
 
     private UserModel userModel;
 
-    /* Constructor. This takes an array of strings as an input to display to the user. The array
-    of strings is only being used for testing at the moment. */
+    /* Constructor. This takes an array of strings as an input to display to the user. */
     public ViewEventAdapter(ViewEventFragment currentFragment, String[] items, UserModel uModel) {
         testList = items;
         fragment = currentFragment;
@@ -48,10 +47,12 @@ public class ViewEventAdapter extends RecyclerView.Adapter<ViewEventHolder> {
         return new ViewEventHolder(inflater, parent);
     }
 
+    /* The second of three methods that need to be overridden when creating an adapter. This
+    method is responsible for binding data to a ViewHolder object that represents an item in the
+    list.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewEventHolder holder, int position) {
-        //Button button = new Button(holder.itemView.getContext());
-        //button.setText(testList[position].toString());
         holder.mViewEventButton.setText(testList[position].toString());
 
         holder.mViewEventButton.setOnClickListener(new View.OnClickListener() {
@@ -63,9 +64,11 @@ public class ViewEventAdapter extends RecyclerView.Adapter<ViewEventHolder> {
 
             }
         });
-        //holder.mEventTextView.setText(testList[position].toString());
     }
 
+    /* The third of three methods that need to be overridden when creating an adapter. This
+    method is responsible for returning the number of items in the list being displayed.
+     */
     @Override
     public int getItemCount() { return testList.length; }
 }

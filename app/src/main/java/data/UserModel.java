@@ -67,7 +67,6 @@ public class UserModel extends ViewModel {
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.enableNetwork();
         usersCollectionReference = firebaseFirestore.collection("Users");
-        Log.d(TAG, String.valueOf(usersCollectionReference));
 
         events = new MutableLiveData<>();
         members = new MutableLiveData<>();
@@ -115,6 +114,7 @@ public class UserModel extends ViewModel {
     /* Get a user's information */
     public void getUser() {
 
+        //get the user from the database
         usersCollectionReference.document(userUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -131,7 +131,6 @@ public class UserModel extends ViewModel {
                         userUsername = document.getString("username");
 
                         String returnType = document.get("events").getClass().getSimpleName();
-                        Log.d(TAG, returnType);
 
                         //document.get("events") returns a list if non-empty and a map if empty
                         if (returnType.equals("ArrayList")) {
@@ -140,6 +139,7 @@ public class UserModel extends ViewModel {
                             events.setValue(new ArrayList<Object>());
                         }
 
+                        //initialize the members and gifts arrays
                         members.setValue(new ArrayList<>());
                         gifts.setValue(new ArrayList<>());
 
@@ -172,6 +172,7 @@ public class UserModel extends ViewModel {
             });
     }
 
+    /* Update the users event array. */
     public void updateEventsArray(Map<String, Object> newEvent) {
         usersCollectionReference.document(userUID).update("events", FieldValue.arrayUnion(newEvent))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -189,6 +190,9 @@ public class UserModel extends ViewModel {
                 });
     }
 
+    /* Update the user's members array for specific event. This method makes the necessary
+    changes to an event's members array and then updates the entire events array for a user.
+     */
     public void updateMembersArray() {
 
         // iterate over all events
@@ -216,51 +220,11 @@ public class UserModel extends ViewModel {
                         Log.e(TAG, "Error updating events field", e);
                     }
                 });
-
-        /*
-        // Get a reference to the newly added event in the "events" array
-
-        //Query query = usersCollectionReference.document(userUID).collection("events")
-        // .whereEqualTo("name", currentEvent.get("name"));
-
-        Query query =
-                usersCollectionReference.whereArrayContains("events", currentEvent);
-
-        // Update the "members" field of the event
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Log.d(TAG, "Made it in the onComplete method");
-                    // Loop through the query result to get the matching document reference
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        DocumentReference docRef = document.getReference();
-
-                        //get the
-                        ArrayList<Map<String, Object>> events =
-                                (ArrayList<Map<String, Object>>) document.get(
-                                "events");
-                        for (Map<String, Object> event : events) {
-                            if (event.get("name") == currentEvent.get("name")) {
-                                event.replace("members", members);
-                            }
-                        }
-
-
-                        //Log.d(TAG, "inside loop");
-                        // Update the "members" field of the event
-                        //eventRef.update("members", FieldValue.arrayUnion(newMember));
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            }
-        });*/
-
-
     }
 
+    /* Update the user's gifts array for specific event and member. This method makes the necessary
+    changes to an event's member's gifts array and then updates the entire events array for a user.
+     */
     public void updateGiftsArray() {
 
         // iterate over all events
@@ -301,6 +265,7 @@ public class UserModel extends ViewModel {
 
     }
 
+    /* Delete a gift from the local gifts array and then update the database */
     public void deleteGift() {
 
         //remove gift from local gift array
@@ -308,6 +273,30 @@ public class UserModel extends ViewModel {
 
         //set currentGift to empty
         currentGift = new HashMap<>();
+
+        //update firebase
+        updateGiftsArray();
+    }
+
+    /* Delete a member from the local members array and then update the database */
+    public void deleteMember() {
+        //remove gift from local gift array
+        members.getValue().remove(currentMember);
+
+        //set currentMember to empty
+        currentMember = new HashMap<>();
+
+        //update firebase
+        updateMembersArray();
+    }
+
+    /* Delete an event from the local events array and then update the database */
+    public void deleteEvent() {
+        //remove gift from local gift array
+        events.getValue().remove(currentEvent);
+
+        //set currentMember to empty
+        currentEvent = new HashMap<>();
 
         //update firebase
         usersCollectionReference.document(userUID).update("events", events.getValue())
@@ -324,29 +313,6 @@ public class UserModel extends ViewModel {
                     }
                 });
     }
-
-    public void deleteMember() {
-        //remove gift from local gift array
-        members.getValue().remove(currentMember);
-
-        //set currentMember to empty
-        currentMember = new HashMap<>();
-
-        //update firebase
-        updateMembersArray();
-    }
-
-    public void deleteEvent() {
-        //remove gift from local gift array
-        events.getValue().remove(currentEvent);
-
-        //set currentMember to empty
-        currentEvent = new HashMap<>();
-
-        //update firebase
-        updateMembersArray();
-    }
-
 
 
     /* Delete a user from the database */
@@ -394,6 +360,8 @@ public class UserModel extends ViewModel {
     /* This method is called when the user creates an account. It initializes local variables of
     all the account information */
     private void initInfo(Map<String, Object> data) {
+
+        // initialize account information
         userEmail = (String) data.get("email");
         userFirstName = (String) data.get("first_name");
         userLastName = (String) data.get("last_name");
@@ -401,6 +369,11 @@ public class UserModel extends ViewModel {
         userBudget = (String) data.get("spending_budget");
         userUsername = (String) data.get("username");
         profilePic = (String) data.get("profile_picture");
+
+        // initialize events, members, and gifts arrays
+        events.setValue(new ArrayList<Object>());
+        members.setValue(new ArrayList<Object>());
+        gifts.setValue(new ArrayList<Object>());
     }
 
     /* Getter method for user email */
@@ -438,20 +411,26 @@ public class UserModel extends ViewModel {
         return events;
     }
 
+    /* Getter method for members data (MutableLiveData) */
     public MutableLiveData<ArrayList<Object>> getMembers() {
         return members;
     }
 
+    /* Getter method for gifts data (MutableLiveData) */
     public MutableLiveData<ArrayList<Object>> getGifts() {
         return gifts;
     }
 
+    /* Get the event a user clicks on. Also initialize the members for that event */
     public void getEvent(String name){
+
+        // iterate over events
         for(int i = 0; i < events.getValue().size();i++){
             Map<String, Object> event = (Map<String, Object>)
                     events.getValue().get(i);
             String eventName = String.valueOf(event.get("name"));
 
+            //when we find event we're looking for, set currentEvent and initialize members array
             if(eventName.equals(name)){
                 currentEvent = (Map<String, Object>) events.getValue().get(i);
                 members.setValue((ArrayList<Object>) currentEvent.get("members"));
@@ -462,12 +441,16 @@ public class UserModel extends ViewModel {
         }
     }
 
+    /* Get the member a user clicks on. Also initialize the gifts for that member */
     public void getMember(String name){
+
+        // iterate over members
         for(int i = 0; i < members.getValue().size();i++){
             Map<String, Object> member = (Map<String, Object>)
                     members.getValue().get(i);
             String memberName = String.valueOf(member.get("name"));
 
+            // when we find member we're looking for, set currentMember and initialize gifts array
             if(memberName.equals(name)){
                 currentMember = (Map<String, Object>) members.getValue().get(i);
                 gifts.setValue((ArrayList<Object>) currentMember.get("gifts"));
@@ -475,17 +458,22 @@ public class UserModel extends ViewModel {
         }
     }
 
+    /* Get the gift a user clicks on. */
     public void getGift(String name){
+
+        // iterate over gifts
         for(int i = 0; i < gifts.getValue().size();i++){
             Map<String, Object> gift = (Map<String, Object>)
                     gifts.getValue().get(i);
             String giftName = String.valueOf(gift.get("name"));
 
+            // when we find gift we're looking for, set currentGift
             if(giftName.equals(name)){
                 currentGift = (Map<String, Object>) gifts.getValue().get(i);
             }
         }
     }
+
     /* Getter method for profile picture information. Not currently in use */
     public String getProfilePic() { return this.profilePic; }
 }

@@ -26,15 +26,12 @@ import data.EventModel;
 
 public class AddMemberFragment extends Fragment {
     private AddMemberFragmentBinding binding;
-
     private LoginActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (LoginActivity) getActivity();
-
-
     }
 
     @Override
@@ -52,29 +49,24 @@ public class AddMemberFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //if user wants to add a member
         binding.addMemberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //not necessary getUser is called when user signs in
-                //activity.userModel.getUser();
-
-                //construct a new event object with current values
+                //construct a new member object with current values
                 Map<String, Object> newMember = constructMemberObject();
 
-                //get list of events
+                //get list of members
                 MutableLiveData<ArrayList<Object>> members = activity.userModel.getMembers();
 
-                //add event to list of events
-                //Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
+                //add member to list of members
                 members.getValue().add(newMember);
-                //Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
 
-                //update the user's events array
-                //Map<String, Object> update = new HashMap<>();
-                //update.put("events", events);
+                //update the user's member array
                 activity.userModel.updateMembersArray();
 
+                // navigate back to list of members (an event page)
                 NavHostFragment.findNavController(AddMemberFragment.this)
                         .navigate(R.id.action_addMemberFragment_to_viewEventFragment);
 
@@ -82,20 +74,27 @@ public class AddMemberFragment extends Fragment {
             }
         });
 
+        //if user wants to navigate back to list of members
         binding.backToEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // navigate back to list of members (an event page)
                 NavHostFragment.findNavController(AddMemberFragment.this)
                         .navigate(R.id.action_addMemberFragment_to_viewEventFragment);
             }
         });
     }
+
+    /* Build a member object to be added to the database */
     private Map<String, Object> constructMemberObject() {
         Map<String, Object> data = new HashMap<>();
 
+        //set member name
         String name = binding.name.getText().toString();
         data.put("name", name);
+
+        //set member gifts
         data.put("gifts", new ArrayList<Map<String, Object>>());
 
         return data;

@@ -27,13 +27,11 @@ import data.UserModel;
 public class
 ViewEventFragment extends Fragment {
     private ViewEventFragmentBinding binding;
-
     private RecyclerView viewEventRecyclerView;
     private ViewEventAdapter viewEventAdapter;
     private LinearLayoutManager viewEventLayoutManager;
     private String[] items;
     private String TAG = "ViewEvent";
-
     private LoginActivity activity;
 
 
@@ -68,28 +66,38 @@ ViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if user wants to add a member to an event
         binding.addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to the add member page
                 NavHostFragment.findNavController(ViewEventFragment.this)
                         .navigate(R.id.action_viewEventFragment_to_addMemberFragment);
 
             }
         });
 
+        // if user wants to navigate back to list of events
         binding.backToEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate back to list of events
                 NavHostFragment.findNavController(ViewEventFragment.this)
                         .navigate(R.id.action_viewEventFragment_to_EventsFragment);
             }
         });
 
+        // if user wants to delete an event
         binding.deleteEvent.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
+
+                // delete the event locally and from the database
                 activity.userModel.deleteEvent();
+
+                // navigate back to list of events page
                 NavHostFragment.findNavController(ViewEventFragment.this)
                         .navigate(R.id.action_viewEventFragment_to_EventsFragment);
             }
@@ -102,7 +110,7 @@ ViewEventFragment extends Fragment {
                     //when the data loads, do something
                     @Override
                     public void onChanged(ArrayList<Object> data) {
-                        Log.d(TAG, "Events retrieved");
+                        Log.d(TAG, "onViewCreated -> Events retrieved");
                         Log.d(TAG, data.toString());
                         initDataset();
                         viewEventAdapter.notifyDataSetChanged();

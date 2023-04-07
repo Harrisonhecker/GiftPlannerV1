@@ -27,15 +27,12 @@ import data.EventModel;
 
 public class AddGiftFragment extends Fragment {
     private AddGiftFragmentBinding binding;
-
     private LoginActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (LoginActivity) getActivity();
-
-
     }
 
     @Override
@@ -45,63 +42,62 @@ public class AddGiftFragment extends Fragment {
     ) {
 
         binding = AddGiftFragmentBinding.inflate(inflater, container, false);
-
-
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if user wants to add a gift
         binding.addGiftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //not necessary getUser is called when user signs in
-                //activity.userModel.getUser();
-
-                //construct a new event object with current values
+                //construct a new gift object with current values
                 Map<String, Object> newGift = constructGiftObject();
 
-                //get list of events
+                //get list of gifts
                 MutableLiveData<ArrayList<Object>> gifts = activity.userModel.getGifts();
 
-                //add event to list of events
-                //Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
+                //add gift to list of gifts
                 gifts.getValue().add(newGift);
-                //Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
 
-                //update the user's events array
-                //Map<String, Object> update = new HashMap<>();
-                //update.put("events", events);
+                //update the user's gifts array in the database
                 activity.userModel.updateGiftsArray();
 
-
+                // navigate back to list of gifts (an event's member page)
                 NavHostFragment.findNavController(AddGiftFragment.this)
                         .navigate(R.id.action_addGiftFragment_to_viewMemberFragment);
-
-
             }
         });
 
+        // if user wants to go back to the member page
         binding.backToMembers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // navigate back to list of gifts (an event's member page)
                 NavHostFragment.findNavController(AddGiftFragment.this)
                         .navigate(R.id.action_addGiftFragment_to_viewMemberFragment);
             }
         });
     }
 
+    /* Build a gift object to add to the database */
     private Map<String, Object> constructGiftObject() {
+
         Map<String, Object> data = new HashMap<>();
 
+        // set gift name
         String name = binding.giftName.getText().toString();
-        String price = binding.price.getText().toString();
-        String link = binding.link.getText().toString();
         data.put("name", name);
+
+        // set gift price
+        String price = binding.price.getText().toString();
         data.put("price", price);
+
+        // set gift link
+        String link = binding.link.getText().toString();
         data.put("link", link);
 
         return data;

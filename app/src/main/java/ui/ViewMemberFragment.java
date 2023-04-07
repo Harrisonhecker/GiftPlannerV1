@@ -28,13 +28,11 @@ import data.UserModel;
 
 public class ViewMemberFragment extends Fragment {
     private ViewMemberFragmentBinding binding;
-
     private RecyclerView viewMemberRecyclerView;
     private ViewMemberAdapter viewMemberAdapter;
     private LinearLayoutManager viewMemberLayoutManager;
     private String[] items;
     private String TAG = "ViewMember";
-
     private LoginActivity activity;
 
 
@@ -69,28 +67,37 @@ public class ViewMemberFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if user wants to add a gift
         binding.addGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to add gift page
                 NavHostFragment.findNavController(ViewMemberFragment.this)
                         .navigate(R.id.action_viewMemberFragment_to_addGiftFragment);
-
             }
         });
 
+        // if user wants to go back to list of members (event page)
         binding.backToEvents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate back to list of members (event page)
                 NavHostFragment.findNavController(ViewMemberFragment.this)
                         .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
-
             }
         });
 
+        // if user wants to delete a member
         binding.deleteMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // delete member locally and in database
                 activity.userModel.deleteMember();
+
+                // navigate back to list of members (event page)
                 NavHostFragment.findNavController(ViewMemberFragment.this)
                         .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
             }

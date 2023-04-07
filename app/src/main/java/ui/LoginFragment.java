@@ -26,10 +26,7 @@ public class LoginFragment extends Fragment {
 
     private String TAG = "FirstFragment";
     private FirebaseAuth mAuth;
-
     private LoginActivity activity;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,19 +42,19 @@ public class LoginFragment extends Fragment {
     ) {
 
         binding = LoginFragmentBinding.inflate(inflater, container, false);
-
         Log.d(TAG, "onCreateView called");
-
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //if user wants to log in to an account
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // do some simple checking to make sure fields have been populated
                 String email = binding.loginEmail.getText().toString();
                 String password = binding.loginPassword.getText().toString();
                 if (email.isEmpty() || password.isEmpty()) {
@@ -79,10 +76,13 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        //if user wants to create a new account
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // navigate to sign-up page
                 NavHostFragment.findNavController(LoginFragment.this)
                         .navigate(R.id.action_LoginFragment_to_SignupFragment);
             }

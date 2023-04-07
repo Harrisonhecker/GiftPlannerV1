@@ -30,19 +30,13 @@ import data.EventModel;
 public class AddEventFragment extends Fragment {
 
     private AddEventFragmentBinding binding;
-
-    private EventModel eventModel;
-
     private LoginActivity activity;
-
     private String TAG = "AddEventFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (LoginActivity) getActivity();
-
-
     }
 
     @Override
@@ -52,22 +46,16 @@ public class AddEventFragment extends Fragment {
     ) {
 
         binding = AddEventFragmentBinding.inflate(inflater, container, false);
-
-
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        eventModel = new ViewModelProvider((ViewModelStoreOwner) this).get(EventModel.class);
+        //if user wants to add an event
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //not necessary getUser is called when user signs in
-                //activity.userModel.getUser();
 
                 //construct a new event object with current values
                 Map<String, Object> newEvent = constructEventObject();
@@ -76,24 +64,23 @@ public class AddEventFragment extends Fragment {
                 MutableLiveData<ArrayList<Object>> events = activity.userModel.getEvents();
 
                 //add event to list of events
-                Log.d(TAG, "Before adding: " + String.valueOf(events.getValue()));
                 events.getValue().add(newEvent);
-                Log.d(TAG, "After adding: " + String.valueOf(events.getValue()));
 
-                //update the user's events array
-                //Map<String, Object> update = new HashMap<>();
-                //update.put("events", events);
+                //update the user's events array in database
                 activity.userModel.updateEventsArray(newEvent);
 
+                // navigate back to list of events page
                 NavHostFragment.findNavController(AddEventFragment.this)
                         .navigate(R.id.action_addEventFragment_to_EventsFragment);
             }
         });
 
+        //if user wants to navigate back to list of events page
         binding.backToEventsList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // navigate back to list of events page
                 NavHostFragment.findNavController(AddEventFragment.this)
                         .navigate(R.id.action_addEventFragment_to_EventsFragment);
             }
@@ -101,22 +88,31 @@ public class AddEventFragment extends Fragment {
 
     }
 
+    /* This method constructs an event object to be added to the database */
     private Map<String, Object> constructEventObject() {
+
         Map<String, Object> data = new HashMap<>();
 
+        // set event name
         String name = binding.eventName.getText().toString();
         data.put("name", name);
 
+        // set event date
         String date = binding.date.getText().toString();
         data.put("date", date);
 
+        // set event budget
         String budget = binding.budget.getText().toString();
         data.put("purchasing_budget", budget);
 
+        // set event notification preference
         boolean notify = binding.remindSwitch.isChecked();
         data.put("notify", notify);
 
+        // set if event has met budget
         data.put("budget_met", false);
+
+        // set event members (empty at this point)
         data.put("members", new ArrayList<Map<String, Object>>());
 
         return data;
