@@ -64,12 +64,20 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //create a user object and add it to the database
-                createUser();
+                if (checkPassword(binding.signupPassword.getText().toString())) {
+                    //create a user object and add it to the database
+                    createUser();
 
-                // navigate to the main page that lists all events
-                NavHostFragment.findNavController(SignupFragment.this)
-                        .navigate(R.id.action_SignupFragment_to_EventsFragment);
+                    // navigate to the main page that lists all events
+                    NavHostFragment.findNavController(SignupFragment.this)
+                            .navigate(R.id.action_SignupFragment_to_EventsFragment);
+                } else {
+                    Toast.makeText(getContext(), "Password have one uppercase " +
+                            "letter, one lowercase letter, one digit, one special character, and " +
+                                    "have a minimum of 8 characters. ",
+                            Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -160,6 +168,20 @@ public class SignupFragment extends Fragment {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         Log.d(TAG, message);
         printInformation();
+    }
+
+    /* Check if password matches the requirements */
+    private boolean checkPassword(String password) {
+
+        //password must have
+        //one uppercase letter
+        //one lowercase letter
+        //one digit
+        //one special character
+        //minimum length of 8 characters
+
+        String pattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return password.matches(pattern);
     }
 
     @Override
