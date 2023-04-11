@@ -33,10 +33,10 @@ import ui.EventsFragment;
 public class UserModel extends ViewModel {
 
     private static final String TAG = "UserModel";
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersCollectionReference;
+    public FirebaseFirestore firebaseFirestore;
+    public CollectionReference usersCollectionReference;
 
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
 
     private String userUID;
     private String userEmail;
@@ -46,11 +46,11 @@ public class UserModel extends ViewModel {
     private String userBudget;
     private String userUsername;
     private String profilePic;
-    private MutableLiveData<ArrayList<Object>> events;
+    public MutableLiveData<ArrayList<Object>> events;
 
-    private MutableLiveData<ArrayList<Object>> members;
+    public MutableLiveData<ArrayList<Object>> members;
 
-    private MutableLiveData<ArrayList<Object>> gifts;
+    public MutableLiveData<ArrayList<Object>> gifts;
     public Map<String,Object> currentEvent;
 
     public Map<String,Object> currentMember;
@@ -71,6 +71,7 @@ public class UserModel extends ViewModel {
         members = new MutableLiveData<>();
         gifts = new MutableLiveData<>();
     }
+
 
     /* Add a user to the database */
     public void addUser(String email, String password, Map<String, Object> userData) {
@@ -253,7 +254,7 @@ public class UserModel extends ViewModel {
 
     /* This method is called when the user creates an account. It initializes local variables of
     all the account information */
-    private void initInfo(Map<String, Object> data) {
+    public void initInfo(Map<String, Object> data) {
         userEmail = (String) data.get("email");
         userFirstName = (String) data.get("first_name");
         userLastName = (String) data.get("last_name");
@@ -347,4 +348,10 @@ public class UserModel extends ViewModel {
     }
     /* Getter method for profile picture information. Not currently in use */
     public String getProfilePic() { return this.profilePic; }
+
+    public UserModel(String test) {
+        events = new MutableLiveData<>();
+        members = new MutableLiveData<>();
+        gifts = new MutableLiveData<>();
+    }
 }
