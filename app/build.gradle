@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.giftplannerv1"
-        minSdk 22
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -60,5 +60,7 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.4.0'
     testImplementation 'com.google.firebase:firebase-firestore:23.0.4'
     testImplementation 'com.google.firebase:firebase-auth:21.0.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
 
 }

@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_viewEventFragment_to_viewMemberFragment"
             app:destination="@id/viewMemberFragment" />
+        <action
+            android:id="@+id/action_viewEventFragment_to_EventsFragment"
+            app:destination="@id/EventsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addMemberFragment"
@@ -103,6 +106,9 @@
         <action
             android:id="@+id/action_viewMemberFragment_to_viewGiftFragment"
             app:destination="@id/viewGiftFragment" />
+        <action
+            android:id="@+id/action_viewMemberFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/addGiftFragment"
@@ -117,5 +123,9 @@
         android:id="@+id/viewGiftFragment"
         android:name="ui.ViewGiftFragment"
         android:label="view_gift_fragment"
-        tools:layout="@layout/view_gift_fragment" />
+        tools:layout="@layout/view_gift_fragment" >
+    <action
+        android:id="@+id/action_viewGiftFragment_to_viewMemberFragment"
+        app:destination="@id/viewMemberFragment" />
+    </fragment>
 </navigation>

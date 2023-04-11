@@ -32,7 +32,7 @@ public class UserModelTest {
         data.put("username", "johndoe");
         data.put("profile_picture", "https://example.com/profile.jpg");
 
-        userModel.initInfo(data);
+        userModel.initInfoTest(data);
 
         assertEquals("johndoe@gmail.com", userModel.getEmail());
         assertEquals("John", userModel.getFirstName());

@@ -71,7 +71,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventHolder> {
 
             }
         });
-        //holder.mEventTextView.setText(testList[position].toString());
     }
 
     /* The third of three methods that need to be overridden when creating an adapter. This

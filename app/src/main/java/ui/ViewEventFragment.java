@@ -24,15 +24,14 @@ import activities.LoginActivity;
 import adapters.ViewEventAdapter;
 import data.UserModel;
 
-public class ViewEventFragment extends Fragment {
+public class
+ViewEventFragment extends Fragment {
     private ViewEventFragmentBinding binding;
-
     private RecyclerView viewEventRecyclerView;
     private ViewEventAdapter viewEventAdapter;
     private LinearLayoutManager viewEventLayoutManager;
     private String[] items;
     private String TAG = "ViewEvent";
-
     private LoginActivity activity;
 
 
@@ -67,12 +66,40 @@ public class ViewEventFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if user wants to add a member to an event
         binding.addMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to the add member page
                 NavHostFragment.findNavController(ViewEventFragment.this)
                         .navigate(R.id.action_viewEventFragment_to_addMemberFragment);
 
+            }
+        });
+
+        // if user wants to navigate back to list of events
+        binding.backToEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // navigate back to list of events
+                NavHostFragment.findNavController(ViewEventFragment.this)
+                        .navigate(R.id.action_viewEventFragment_to_EventsFragment);
+            }
+        });
+
+        // if user wants to delete an event
+        binding.deleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // delete the event locally and from the database
+                activity.userModel.deleteEvent();
+
+                // navigate back to list of events page
+                NavHostFragment.findNavController(ViewEventFragment.this)
+                        .navigate(R.id.action_viewEventFragment_to_EventsFragment);
             }
         });
 
@@ -83,7 +110,7 @@ public class ViewEventFragment extends Fragment {
                     //when the data loads, do something
                     @Override
                     public void onChanged(ArrayList<Object> data) {
-                        Log.d(TAG, "Events retrieved");
+                        Log.d(TAG, "onViewCreated -> Events retrieved");
                         Log.d(TAG, data.toString());
                         initDataset();
                         viewEventAdapter.notifyDataSetChanged();
@@ -98,17 +125,27 @@ public class ViewEventFragment extends Fragment {
     }
     private void initDataset() {
 
+        // if data from firebase is read in
         if (activity.userModel.getMembers().getValue() != null) {
             this.items = new String[activity.userModel.getMembers().getValue().size()];
-            for (int i = 0; i < this.items.length; i++) {
-                Map<String, Object> member = (Map<String, Object>) activity.userModel.getMembers().getValue().get(i);
-                this.items[i] = String.valueOf(member.get("name"));
-                Log.d(TAG, this.items[i]);
+
+            //if there are more than 0 events associated with the user
+            if (this.items.length > 0) {
+                for (int i = 0; i < this.items.length; i++) {
+                    Map<String, Object> member = (Map<String, Object>) activity.userModel.getMembers().getValue().get(i);
+                    this.items[i] = String.valueOf(member.get("name"));
+                    Log.d(TAG, this.items[i]);
+                }
+            } else { // if the user has not added any events yet
+                this.items = new String[1];
+                this.items[0] = "No members for this event";
             }
-        } else {
+        } else { // if the data from firebase has not been received yet
             this.items = new String[1];
-            this.items[0] = "Events are currently loading";
+            this.items[0] = "Members are currently loading";
         }
+
+        // first time initDataset is called, the eventAdapter has not been declared yet
         if (this.viewEventAdapter != null) {
             this.viewEventAdapter.updateData(this.items);
         }

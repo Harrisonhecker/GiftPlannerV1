@@ -28,13 +28,11 @@ import data.UserModel;
 
 public class ViewMemberFragment extends Fragment {
     private ViewMemberFragmentBinding binding;
-
     private RecyclerView viewMemberRecyclerView;
     private ViewMemberAdapter viewMemberAdapter;
     private LinearLayoutManager viewMemberLayoutManager;
     private String[] items;
     private String TAG = "ViewMember";
-
     private LoginActivity activity;
 
 
@@ -69,12 +67,39 @@ public class ViewMemberFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // if user wants to add a gift
         binding.addGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to add gift page
                 NavHostFragment.findNavController(ViewMemberFragment.this)
                         .navigate(R.id.action_viewMemberFragment_to_addGiftFragment);
+            }
+        });
 
+        // if user wants to go back to list of members (event page)
+        binding.backToEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // navigate back to list of members (event page)
+                NavHostFragment.findNavController(ViewMemberFragment.this)
+                        .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
+            }
+        });
+
+        // if user wants to delete a member
+        binding.deleteMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // delete member locally and in database
+                activity.userModel.deleteMember();
+
+                // navigate back to list of members (event page)
+                NavHostFragment.findNavController(ViewMemberFragment.this)
+                        .navigate(R.id.action_viewMemberFragment_to_viewEventFragment);
             }
         });
 
@@ -100,17 +125,27 @@ public class ViewMemberFragment extends Fragment {
     }
     private void initDataset() {
 
+        // if data from firebase is read in
         if (activity.userModel.getGifts().getValue() != null) {
             this.items = new String[activity.userModel.getGifts().getValue().size()];
-            for (int i = 0; i < this.items.length; i++) {
-                Map<String, Object> gift = (Map<String, Object>) activity.userModel.getGifts().getValue().get(i);
-                this.items[i] = String.valueOf(gift.get("name"));
-                Log.d(TAG, this.items[i]);
+
+            //if there are more than 0 events associated with the user
+            if (this.items.length > 0) {
+                for (int i = 0; i < this.items.length; i++) {
+                    Map<String, Object> gift = (Map<String, Object>) activity.userModel.getGifts().getValue().get(i);
+                    this.items[i] = String.valueOf(gift.get("name"));
+                    Log.d(TAG, this.items[i]);
+                }
+            } else { // if the user has not added any events yet
+                this.items = new String[1];
+                this.items[0] = "No gifts added for this member";
             }
-        } else {
+        } else { // if the data from firebase has not been received yet
             this.items = new String[1];
             this.items[0] = "Gifts are currently loading";
         }
+
+        // first time initDataset is called, the eventAdapter has not been declared yet
         if (this.viewMemberAdapter != null) {
             this.viewMemberAdapter.updateData(this.items);
         }

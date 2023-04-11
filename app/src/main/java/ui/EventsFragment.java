@@ -33,16 +33,12 @@ import data.UserModel;
 public class EventsFragment extends Fragment {
 
     private EventsFragmentBinding binding;
-
     private RecyclerView eventRecyclerView;
     private EventAdapter eventAdapter;
     private LinearLayoutManager eventLayoutManager;
     private String[] items;
     private String TAG = "SecondFragment";
-
     private LoginActivity activity;
-
-    private UserModel userModel;
 
     @Override
     public View onCreateView(
@@ -69,6 +65,7 @@ public class EventsFragment extends Fragment {
         this.eventLayoutManager = new LinearLayoutManager(this.getContext());
         this.eventRecyclerView.setLayoutManager(this.eventLayoutManager);
 
+
         return binding.getRoot();
     }
 
@@ -82,29 +79,37 @@ public class EventsFragment extends Fragment {
             //when the data loads, do something
             @Override
             public void onChanged(ArrayList<Object> data) {
-                Log.d(TAG, "Events retrieved");
+                Log.d(TAG, "onViewCreated -> Events retrieved");
                 Log.d(TAG, data.toString());
                 initDataset();
-                eventAdapter.notifyDataSetChanged();
             }
         });
+
+        // if user wants to add an event
         binding.addEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to add event fragment
                 NavHostFragment.findNavController(EventsFragment.this)
                         .navigate(R.id.action_EventsFragment_to_AddEventFragment);
 
             }
         });
+
+        // if user wants to edit their profile
         binding.editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // navigate to edit profile page
                 NavHostFragment.findNavController(EventsFragment.this)
                         .navigate(R.id.action_EventsFragment_to_EditProfileFragment);
             }
         });
     }
 
+    /* This function essentially refreshes the list of events when the user returns to the page */
     @Override
     public void onResume() {
         super.onResume();
@@ -115,16 +120,11 @@ public class EventsFragment extends Fragment {
                     //when the data loads, do something
                     @Override
                     public void onChanged(ArrayList<Object> data) {
-                        Log.d(TAG, "Events retrieved");
+                        Log.d(TAG, "onResume -> Events retrieved");
                         Log.d(TAG, data.toString());
                         initDataset();
-                        eventAdapter.notifyDataSetChanged();
                     }
         });
-
-        // Refresh your fragment's data here
-        // For example, if you are populating a list, you can call the method to repopulate the list here
-        // Or if you are fetching data from an API, you can call the API here
     }
 
 
@@ -134,24 +134,33 @@ public class EventsFragment extends Fragment {
         binding = null;
     }
 
+    /* Initialize the data for the RecyclerView that displays events */
     private void initDataset() {
 
+        // if data from firebase is read in
         if (activity.userModel.getEvents().getValue() != null) {
             this.items = new String[activity.userModel.getEvents().getValue().size()];
-            for (int i = 0; i < this.items.length; i++) {
+
+            //if there are more than 0 events associated with the user
+            if (this.items.length > 0) {
+                for (int i = 0; i < this.items.length; i++) {
                     Map<String, Object> event = (Map<String, Object>) activity.userModel.getEvents().getValue().get(i);
                     this.items[i] = String.valueOf(event.get("name"));
                     Log.d(TAG, this.items[i]);
+                }
+            } else { // if the user has not added any events yet
+                this.items = new String[1];
+                this.items[0] = "You have no events";
             }
-        } else {
+        } else { // if the data from firebase has not been received yet
             this.items = new String[1];
             this.items[0] = "Events are currently loading";
         }
+
+        // first time initDataset is called, the eventAdapter has not been declared yet
         if (this.eventAdapter != null) {
             this.eventAdapter.updateData(this.items);
         }
-
-
     }
 
 }
