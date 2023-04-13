@@ -187,8 +187,8 @@ public class UserModel extends ViewModel {
                         }
 
                         //initialize the members and gifts arrays
-                        members.setValue(new ArrayList<>());
-                        gifts.setValue(new ArrayList<>());
+                        //members.setValue(new ArrayList<>());
+                        //gifts.setValue(new ArrayList<>());
                     } else {
                         Log.d(TAG, "No such document");
                     }

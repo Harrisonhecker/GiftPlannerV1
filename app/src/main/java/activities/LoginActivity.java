@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "EMAIL/PW SAVED");
                     userModel = new UserModel();
                     userModel.signIn(savedInstanceState.getString("email"), savedInstanceState.getString("password"));
-                    userModel.getUser(savedInstanceState.getString("userUID"));
+                    //userModel.getUser(savedInstanceState.getString("userUID"));
                     userModel.setEvents((ArrayList<Object>) savedInstanceState.getSerializable("events"));
                     userModel.setMembers((ArrayList<Object>) savedInstanceState.getSerializable("members"));
                     userModel.setGifts((ArrayList<Object>) savedInstanceState.getSerializable("gifts"));
@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             outState.putSerializable("currentGift", (Serializable) userModel.currentGift);
         }
 
-        Log.d(TAG, userModel.getUserUID());
+        //Log.d(TAG, userModel.getUserUID());
 
     }
 
