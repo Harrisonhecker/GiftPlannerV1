@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
@@ -24,6 +25,10 @@ import com.example.giftplannerv1.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
 
 import adapters.EventAdapter;
 import data.UserModel;
@@ -47,7 +52,49 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate Called");
         Log.d(TAG, "just before call to get ViewModel");
-        userModel = new UserModel();
+
+        if (savedInstanceState != null) {
+            for (String key : savedInstanceState.keySet()) {
+                Log.d(TAG, "Key: " + key + ", Value: " + savedInstanceState.get(key));
+            }
+            if (savedInstanceState.containsKey("email")) {
+                if (savedInstanceState.containsKey("password")) {
+                    Log.d(TAG, "EMAIL/PW SAVED");
+                    userModel = new UserModel();
+                    userModel.signIn(savedInstanceState.getString("email"), savedInstanceState.getString("password"));
+                    userModel.getUser(savedInstanceState.getString("userUID"));
+                    userModel.setEvents((ArrayList<Object>) savedInstanceState.getSerializable("events"));
+                    userModel.setMembers((ArrayList<Object>) savedInstanceState.getSerializable("members"));
+                    userModel.setGifts((ArrayList<Object>) savedInstanceState.getSerializable("gifts"));
+                    Log.d(TAG, "Updated Members: " + String.valueOf(userModel.getMembers().getValue()));
+                    if (savedInstanceState.containsKey("currentEvent")) {
+                        userModel.currentEvent = (Map<String, Object>) savedInstanceState.getSerializable("currentEvent");
+                    }
+
+                    if (savedInstanceState.containsKey("currentMember")) {
+                        userModel.currentMember = (Map<String, Object>) savedInstanceState.getSerializable("currentMember");
+                    }
+
+                    if (savedInstanceState.containsKey("currentGift")) {
+                        userModel.currentGift = (Map<String, Object>) savedInstanceState.getSerializable("currentGift");
+                    }
+
+                }
+            }
+        } else {
+
+            Log.d(TAG, "savedInstanceState was null");
+            userModel = new UserModel();
+        }
+/*
+        if (savedInstanceState != null) {
+            for (String key : savedInstanceState.keySet()) {
+                Log.d(TAG, "Key: " + key + ", Value: " + savedInstanceState.get(key));
+            }
+        }
+
+ */
+        //userModel = new ViewModelProvider(this).get(UserModel.class);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -100,6 +147,48 @@ public class LoginActivity extends AppCompatActivity {
     }
      */
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceStateCalled");
+        outState.putString("userUID", userModel.getUserUID());
+        outState.putString("email", userModel.getEmail());
+        outState.putString("password", userModel.getPassword());
+        outState.putSerializable("events", (Serializable) userModel.getEvents().getValue());
+        outState.putSerializable("members", (Serializable) userModel.getMembers().getValue());
+        Log.d(TAG, "Members: " + userModel.getMembers().getValue());
+        outState.putSerializable("gifts", (Serializable) userModel.getGifts().getValue());
+
+        if (userModel.currentEvent != null) {
+            outState.putSerializable("currentEvent", (Serializable) userModel.currentEvent);
+        }
+        if (userModel.currentMember != null) {
+            outState.putSerializable("currentMember", (Serializable) userModel.currentMember);
+        }
+        if (userModel.currentGift != null) {
+            outState.putSerializable("currentGift", (Serializable) userModel.currentGift);
+        }
+
+        Log.d(TAG, userModel.getUserUID());
+
+    }
+
+    /*
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG, "onRestoreInstanceStateCalled");
+        Log.d(TAG, "Email: " + savedInstanceState.getString("email"));
+        this.userModel.signIn(savedInstanceState.getString("email"), savedInstanceState.getString("password"));
+        Log.d(TAG, String.valueOf(this.userModel.getEmail() == null));
+        if (savedInstanceState.containsKey("eventName")) {
+            userModel.getEvent(savedInstanceState.getString("eventName"));
+        }
+
+    }
+
+
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

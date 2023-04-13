@@ -113,7 +113,7 @@ public class EventsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        Log.d(TAG, "onResume called");
         activity.userModel.getEvents().observe(getViewLifecycleOwner(),
                 new Observer<ArrayList<Object>>() {
 

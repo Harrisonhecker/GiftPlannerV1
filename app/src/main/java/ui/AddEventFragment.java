@@ -37,6 +37,7 @@ public class AddEventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (LoginActivity) getActivity();
+        Log.d(TAG, String.valueOf(activity.userModel.getEmail()));
     }
 
     @Override

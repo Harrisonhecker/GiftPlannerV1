@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -59,20 +60,64 @@ public class UserModel extends ViewModel {
 
     public Map<String,Object> currentGift;
 
+    private SavedStateHandle savedStateHandle;
 
     public UserModel() {
-
         Log.d(TAG, "View Model Created");
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseFirestore.enableNetwork();
         usersCollectionReference = firebaseFirestore.collection("Users");
-
+        savedStateHandle = new SavedStateHandle();
         events = new MutableLiveData<>();
         members = new MutableLiveData<>();
         gifts = new MutableLiveData<>();
     }
 
+    /*
+    public UserModel(String userID) {
+        Log.d(TAG, "User constructor reached");
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.enableNetwork();
+        usersCollectionReference = firebaseFirestore.collection("Users");
+        events = new MutableLiveData<>();
+        members = new MutableLiveData<>();
+        gifts = new MutableLiveData<>();
+        userEmail = "Test Email";
+
+    }
+    public UserModel(SavedStateHandle savedStateHandle) {
+        this.savedStateHandle = savedStateHandle;
+
+        // Retrieve the instance values from the SavedStateHandle
+        //firebaseFirestore = savedStateHandle.get("firebaseFirestore");
+        //usersCollectionReference = savedStateHandle.get("usersCollectionReference");
+        //mAuth = savedStateHandle.get("mAuth");
+        //userUID = savedStateHandle.get("userUID");
+        if (this.savedStateHandle.contains("userEmail")) {
+            userEmail = this.savedStateHandle.get("userEmail");
+            if (this.savedStateHandle.contains("userPassword")) {
+                userPassword = this.savedStateHandle.get("userPassword");
+                Log.d(TAG, "UserEmail: " + userEmail + "\nUserPassword: " + userPassword);
+                signIn(userEmail, userPassword);
+            }
+        }
+
+        //userFirstName = savedStateHandle.get("userFirstName");
+        //userLastName = savedStateHandle.get("userLastName");
+    }
+
+    public void saveInstanceValues() {
+        //savedStateHandle.set("usersCollectionReference", usersCollectionReference);
+        //savedStateHandle.set("mAuth", mAuth);
+        //savedStateHandle.set("userUID", userUID);
+        savedStateHandle.set("userEmail", userEmail);
+        savedStateHandle.set("userPassword", userPassword);
+        //savedStateHandle.set("userFirstName", userFirstName);
+        //savedStateHandle.set("userLastName", userLastName);
+    }
+*/
     /* Add a user to the database */
     public void addUser(String email, String password, Map<String, Object> userData) {
 
@@ -94,6 +139,7 @@ public class UserModel extends ViewModel {
                                     .addOnSuccessListener((OnSuccessListener<Void>) aVoid -> {
                                         Log.d(TAG, "Account Successfully Created!");
                                         userUID = user.getUid();
+                                        //saveInstanceValues();
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
 
@@ -112,10 +158,10 @@ public class UserModel extends ViewModel {
     }
 
     /* Get a user's information */
-    public void getUser() {
+    public void getUser(String userID) {
 
         //get the user from the database
-        usersCollectionReference.document(userUID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        usersCollectionReference.document(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -123,6 +169,7 @@ public class UserModel extends ViewModel {
                     if (document.exists()) {
 
                         // Get the data from the document
+                        userUID = userID;
                         userEmail = document.getString("email");
                         userFirstName = document.getString("first_name");
                         userLastName = document.getString("last_name");
@@ -142,7 +189,6 @@ public class UserModel extends ViewModel {
                         //initialize the members and gifts arrays
                         members.setValue(new ArrayList<>());
                         gifts.setValue(new ArrayList<>());
-
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -212,6 +258,7 @@ public class UserModel extends ViewModel {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Events field updated successfully");
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -295,7 +342,7 @@ public class UserModel extends ViewModel {
         //remove gift from local gift array
         events.getValue().remove(currentEvent);
 
-        //set currentMember to empty
+        //set currentEvent to empty
         currentEvent = new HashMap<>();
 
         //update firebase
@@ -346,7 +393,8 @@ public class UserModel extends ViewModel {
                             FirebaseUser user = mAuth.getCurrentUser();
                             userUID = user.getUid();
                             Log.d(TAG, "UID: " + userUID);
-                            getUser(); //initialize user information
+                            getUser(userUID); //initialize user information
+                            //saveInstanceValues();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, task.getException().toString());
@@ -376,6 +424,7 @@ public class UserModel extends ViewModel {
         gifts.setValue(new ArrayList<Object>());
     }
 
+    public String getUserUID() { return this.userUID; }
     /* Getter method for user email */
     public String getEmail() {
         return this.userEmail;
@@ -476,4 +525,17 @@ public class UserModel extends ViewModel {
 
     /* Getter method for profile picture information. Not currently in use */
     public String getProfilePic() { return this.profilePic; }
+
+    // Setter methods for events/members/gifts
+    public void setEvents(ArrayList<Object> events) {
+        this.events.setValue(events);
+    }
+
+    public void setMembers(ArrayList<Object> members) {
+        this.members.setValue(members);
+    }
+
+    public void setGifts(ArrayList<Object> gifts) {
+        this.gifts.setValue(gifts);
+    }
 }

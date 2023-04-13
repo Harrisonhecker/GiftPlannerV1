@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.giftplannerv1"
-        minSdk 22
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -51,5 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx'
+    implementation 'androidx.activity:activity-ktx'
 
 }
