@@ -424,7 +424,10 @@ public class UserModel extends ViewModel {
         gifts.setValue(new ArrayList<Object>());
     }
 
-    public String getUserUID() { return this.userUID; }
+    /* Getter method for user UID */
+    public String getUserUID() {
+        return this.userUID;
+    }
     /* Getter method for user email */
     public String getEmail() {
         return this.userEmail;
