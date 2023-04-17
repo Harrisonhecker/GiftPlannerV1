@@ -110,7 +110,7 @@ ViewEventFragment extends Fragment {
                     //when the data loads, do something
                     @Override
                     public void onChanged(ArrayList<Object> data) {
-                        Log.d(TAG, "onViewCreated -> Events retrieved");
+                        Log.d(TAG, "onViewCreated -> Events retrieved in View Event Fragment");
                         Log.d(TAG, data.toString());
                         initDataset();
                         viewEventAdapter.notifyDataSetChanged();

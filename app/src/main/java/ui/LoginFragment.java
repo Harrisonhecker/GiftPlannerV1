@@ -65,6 +65,7 @@ public class LoginFragment extends Fragment {
 
                     //this is skeleton logic for not signing in if firebase authentication fails
                     boolean result = activity.userModel.signIn(email, password);
+                    //activity.userModel.saveInstanceValues();
                     if (true) {
                         NavHostFragment.findNavController(LoginFragment.this)
                                 .navigate(R.id.action_LoginFragment_to_EventsFragment);

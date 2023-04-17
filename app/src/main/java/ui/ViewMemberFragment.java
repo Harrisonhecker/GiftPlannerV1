@@ -110,7 +110,7 @@ public class ViewMemberFragment extends Fragment {
                     //when the data loads, do something
                     @Override
                     public void onChanged(ArrayList<Object> data) {
-                        Log.d(TAG, "Events retrieved");
+                        Log.d(TAG, "Events retrieved in View Member Fragment");
                         Log.d(TAG, data.toString());
                         initDataset();
                         viewMemberAdapter.notifyDataSetChanged();
